@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 
 import net.md_5.bungee.api.ChatColor;
+import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
@@ -27,7 +28,7 @@ public class PlayerUtils {
 
 	public static String getName(org.bukkit.entity.Player player) {
 		try {
-			String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", "DoubleTimeCommands");
+			String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
 			Ranks rank = Ranks.valueOf(rankString);
 			return rank.getPrefix() + player.getName();
 		} catch (Exception e1) {
@@ -38,7 +39,7 @@ public class PlayerUtils {
 
 	public static String getName(OfflinePlayer player) {
 		try {
-			String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", "DoubleTimeCommands");
+			String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
 			Ranks rank = Ranks.valueOf(rankString);
 			return rank.getPrefix() + player.getName();
 		} catch (Exception e1) {
@@ -49,7 +50,7 @@ public class PlayerUtils {
 
 	public static Ranks getRank(UUID uuid) {
 		try {
-			return Ranks.valueOf(ConfigProvider.getString("players." + uuid + ".rank", "DEFAULT", "DoubleTimeCommands"));
+			return Ranks.valueOf(ConfigProvider.getString("players." + uuid + ".rank", "DEFAULT", DoubleTimeCommands.file));
 		} catch (Exception e) { return Ranks.DEFAULT; }
 	}
 }

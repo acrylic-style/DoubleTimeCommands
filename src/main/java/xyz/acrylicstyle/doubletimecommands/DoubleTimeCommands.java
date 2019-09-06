@@ -31,6 +31,7 @@ import xyz.acrylicstyle.tomeito_core.utils.Log;
 
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
 	public static ConfigProvider bungee = null;
+	public static File file = null;
 
 	public void onEnable() {
 		Log.info(" > Registering events");
@@ -41,6 +42,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 			String configPath = ConfigProvider.getString("bungeeConfig", null, "DoubleTimeCommands");
 			if (configPath != null) {
 				File config = new File(configPath);
+				file = config;
 				if (config.exists()) bungee = new ConfigProvider(config.getAbsolutePath());
 			}
 		} catch (IOException | InvalidConfigurationException e) {
