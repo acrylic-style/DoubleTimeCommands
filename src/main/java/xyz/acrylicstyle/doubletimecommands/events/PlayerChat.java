@@ -13,6 +13,8 @@ public class PlayerChat implements EventExecutor {
 	@Override
 	public void execute(Listener listener, Event event) throws EventException {
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
+		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
+		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));
 		e.setFormat(ChatColor.translateAlternateColorCodes('&', PlayerUtils.getName(e.getPlayer()) + "&r&f: " + e.getMessage()));
 	}
 }
