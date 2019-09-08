@@ -2,6 +2,7 @@ package xyz.acrylicstyle.doubletimecommands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -68,7 +69,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPreCommand(PlayerCommandPreprocessEvent event) {
 		if (bungee == null) return;
-		String[] args = event.getMessage().split(" ");
+		String[] args = event.getMessage().replaceAll(Pattern.quote("/"), "").split(" ");
 		String rankStr = bungee.getString("commands." + args[0], "DEFAULT");
 		Ranks rank;
 		try {
@@ -78,7 +79,10 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 			ex.printStackTrace();
 			return;
 		}
-		if (!PlayerUtils.must(rank, event.getPlayer())) event.setCancelled(true);
+		if (!PlayerUtils.must(rank, event.getPlayer())) {
+		    event.setCancelled(true);
+		    return;
+        }
 	}
 
 	@EventHandler(priority=EventPriority.HIGH)
