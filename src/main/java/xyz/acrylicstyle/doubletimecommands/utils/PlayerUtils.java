@@ -61,17 +61,16 @@ public class PlayerUtils {
 	 * @param required Required rank for do something
 	 * @param sender anything extends CommandSender for check if they have Admin rank
 	 * @return True if the required rank equals actual rank but console always returns true
-	 * @example
-	 * if (!PlayerUtils.must(Ranks.ADMIN, player)) return; // it sends message automatically, so do only return
+	 * @example if (!PlayerUtils.must(Ranks.ADMIN, player)) return; // it sends message automatically, so do only return
 	 */
 	public static boolean must(Ranks required, CommandSender sender) {
 		if (!(sender instanceof Player)) return true;
 		org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
 		Ranks actual = PlayerUtils.getRank(player.getUniqueId());
-		if (required.ordinal() < actual.ordinal()) {
-			player.sendMessage(ChatColor.RED + "You must be " + required.name().toLowerCase(Locale.ROOT) + " or higher to use this command!");
-			return false;
+		if (required.ordinal() >= actual.ordinal()) {
+			return true;
 		}
-		return true;
+		player.sendMessage(ChatColor.RED + "You must be " + required.name().toLowerCase(Locale.ROOT) + " or higher to use this command!");
+		return false;
 	}
 }
