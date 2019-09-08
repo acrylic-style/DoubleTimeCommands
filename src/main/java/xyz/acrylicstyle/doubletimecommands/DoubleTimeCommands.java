@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -28,6 +29,7 @@ import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
 	public static ConfigProvider bungee = null;
@@ -61,6 +63,22 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		Bukkit.getPluginCommand("maintenance").setExecutor(new Maintenance());
 		Bukkit.getPluginCommand("kickall").setExecutor(new KickAll());
 		Log.info(" > Enabled DoubleTimeCommands");
+	}
+
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void onPreCommand(PlayerCommandPreprocessEvent event) {
+		if (bungee == null) return;
+		String[] args = event.getMessage().split(" ");
+		String rankStr = bungee.getString("commands." + args[0], "DEFAULT");
+		Ranks rank;
+		try {
+			rank = Ranks.valueOf(rankStr);
+		} catch(Exception ex) {
+			event.getPlayer().sendMessage(ChatColor.RED + "An error occurred while processing command");
+			ex.printStackTrace();
+			return;
+		}
+		if (!PlayerUtils.must(rank, event.getPlayer())) event.setCancelled(true);
 	}
 
 	@EventHandler(priority=EventPriority.HIGH)
