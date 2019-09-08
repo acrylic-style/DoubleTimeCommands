@@ -68,6 +68,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPreCommand(PlayerCommandPreprocessEvent event) {
+		event.getPlayer().sendMessage(ChatColor.GRAY + "you just sent a command");
 		if (bungee == null) return;
 		String[] args = event.getMessage().replaceAll(Pattern.quote("/"), "").split(" ");
 		String rankStr = bungee.getString("commands." + args[0], "DEFAULT");
@@ -81,7 +82,6 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		}
 		if (!PlayerUtils.must(rank, event.getPlayer())) {
 		    event.setCancelled(true);
-		    return;
         }
 	}
 
