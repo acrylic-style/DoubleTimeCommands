@@ -18,10 +18,12 @@ public class PlayerCommandPreprocess implements EventExecutor {
         PlayerCommandPreprocessEvent event = (PlayerCommandPreprocessEvent) e;
         if (DoubleTimeCommands.bungee == null) return;
         String[] args = event.getMessage().toLowerCase().substring(1).split(" ");
-        Log.debug(event.getMessage().toLowerCase().substring(1));
+        Log.debug(args[0]);
         Ranks rank;
         try {
             String rankStr = ConfigProvider.getString("commands." + args[0], "DEFAULT", DoubleTimeCommands.file);
+            Log.debug(rankStr);
+            Log.debug(PlayerUtils.getRank(event.getPlayer().getUniqueId()).name());
             rank = Ranks.valueOf(rankStr);
         } catch(Exception ex) {
             event.getPlayer().sendMessage(ChatColor.RED + "An error occurred while processing command");
