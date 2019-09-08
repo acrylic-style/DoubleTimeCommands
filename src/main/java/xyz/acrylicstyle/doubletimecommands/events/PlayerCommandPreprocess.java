@@ -14,17 +14,13 @@ import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 public class PlayerCommandPreprocess implements EventExecutor {
     @Override
     public void execute(Listener listener, Event e) {
-        Log.debug("called");
         PlayerCommandPreprocessEvent event = (PlayerCommandPreprocessEvent) e;
         if (DoubleTimeCommands.bungee == null) return;
         String[] args = event.getMessage().toLowerCase().substring(1).split(" ");
-        Log.debug(args[0]);
         Ranks rank;
         try {
             String rankStr = ConfigProvider.getString("commands." + args[0], "DEFAULT", DoubleTimeCommands.file);
             rank = Ranks.valueOf(rankStr);
-            Log.debug("req: " + rank.ordinal());
-            Log.debug("act: " + PlayerUtils.getRank(event.getPlayer().getUniqueId()).ordinal());
         } catch(Exception ex) {
             event.getPlayer().sendMessage(ChatColor.RED + "An error occurred while processing command");
             ex.printStackTrace();
@@ -32,7 +28,6 @@ public class PlayerCommandPreprocess implements EventExecutor {
         }
         if (!PlayerUtils.must(rank, event.getPlayer())) {
             event.setCancelled(true);
-            Log.debug("Cancelled");
         }
     }
 }

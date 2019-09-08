@@ -10,6 +10,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_core.utils.Log;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 public class PlayerUtils {
@@ -64,13 +65,17 @@ public class PlayerUtils {
 	 * @example if (!PlayerUtils.must(Ranks.ADMIN, player)) return; // it sends message automatically, so do only return
 	 */
 	public static boolean must(Ranks required, CommandSender sender) {
-		if (!(sender instanceof Player)) return true;
-		org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
-		Ranks actual = PlayerUtils.getRank(player.getUniqueId());
-		if (required.ordinal() >= actual.ordinal()) {
+		if (!(sender instanceof org.bukkit.entity.Player)) {
+			Log.info(sender.getName() + "'s check has been skipped because they're not a Player");
 			return true;
 		}
-		player.sendMessage(ChatColor.RED + "You must be " + required.name().toLowerCase(Locale.ROOT) + " or higher to use this command!");
-		return false;
+		org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
+		Ranks actual = PlayerUtils.getRank(player.getUniqueId());
+		if (required.ordinal() < actual.ordinal()) {
+			player.sendMessage(ChatColor.RED + "You must be " + required.name().toLowerCase(Locale.ROOT) + " or higher to use this command!");
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
