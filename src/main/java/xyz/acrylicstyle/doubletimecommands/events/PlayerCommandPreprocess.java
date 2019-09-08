@@ -22,9 +22,9 @@ public class PlayerCommandPreprocess implements EventExecutor {
         Ranks rank;
         try {
             String rankStr = ConfigProvider.getString("commands." + args[0], "DEFAULT", DoubleTimeCommands.file);
-            Log.debug(rankStr);
-            Log.debug(PlayerUtils.getRank(event.getPlayer().getUniqueId()).name());
             rank = Ranks.valueOf(rankStr);
+            Log.debug("req: " + rank.ordinal());
+            Log.debug("act: " + PlayerUtils.getRank(event.getPlayer().getUniqueId()).ordinal());
         } catch(Exception ex) {
             event.getPlayer().sendMessage(ChatColor.RED + "An error occurred while processing command");
             ex.printStackTrace();
