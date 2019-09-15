@@ -19,6 +19,7 @@ import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 	public void onEnable() {
 		Log.info(" > Registering events");
 		Bukkit.getPluginManager().registerEvents(this, this);
-		String apcePriority = null; // apce = AsyncPlayerChatEvent
+		String apcePriority; // apce = AsyncPlayerChatEvent
 		String pcppPriority = null; // pcpp = PlayerCommandPreProcessEvent
 		try {
 			apcePriority = ConfigProvider.getString("priority.AsyncPlayerChatEvent", "HIGHEST", "DoubleTimeCommands");
@@ -73,7 +74,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		ConfigProvider config = null;
+		ConfigProvider config;
 		try {
 			config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
 		} catch (Exception ex) {
@@ -87,6 +88,10 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		}
 		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
 		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));
+		if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.VIP, e.getPlayer().getUniqueId())) {
+			e.getPlayer().setAllowFlight(true);
+			e.getPlayer().setFlying(true);
+		}
 		String gamemode = config.getString("gamemodeOnJoin");
 		if (gamemode != null) {
 			e.getPlayer().setGameMode(GameMode.valueOf(gamemode));

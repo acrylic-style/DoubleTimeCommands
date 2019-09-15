@@ -78,4 +78,15 @@ public class PlayerUtils {
 			return true;
 		}
 	}
+
+	/**
+	 * @param required Required rank for do something
+	 * @param sender anything extends CommandSender for check if they have required rank
+	 * @return True if the required rank equals actual rank
+	 * @example if (!PlayerUtils.must(Ranks.ADMIN, uuid)) System.out.println("they dont have permission fuck");
+	 */
+	public static boolean must(Ranks required, UUID uuid) {
+		Ranks actual = PlayerUtils.getRank(uuid);
+		return required.ordinal() >= actual.ordinal();
+	}
 }
