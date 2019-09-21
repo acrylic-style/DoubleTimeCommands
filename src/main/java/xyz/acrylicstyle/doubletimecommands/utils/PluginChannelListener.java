@@ -1,15 +1,16 @@
 package xyz.acrylicstyle.doubletimecommands.utils;
 
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
-
-import java.io.*;
 import util.Collection;
+import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 
+import java.io.*;
+import java.util.UUID;
+
 public class PluginChannelListener implements PluginMessageListener {
-    private static Collection<Player, String> obj = new Collection<>();
+    private static Collection<UUID, String> obj = new Collection<>();
+    private static Collection<UUID, Callback<String>> callbacks = new Collection<>();
 
     @Override
     public synchronized void onPluginMessageReceived(String channel, org.bukkit.entity.Player player, byte[] message) {
@@ -18,28 +19,26 @@ public class PluginChannelListener implements PluginMessageListener {
             String subchannel = in.readUTF();
             if (subchannel.equals("rank")) {
                 String input = in.readUTF();
-                obj.put(player, input);
+                //obj.put(player.getUniqueId(), input);
                 Log.debug("Received message!");
                 Log.debug("Channel: " + channel);
                 Log.debug("Subchannel: " + subchannel);
                 Log.debug("Input: " + input);
-                synchronized (Lock.LOCK) {
-                    Lock.LOCK.notifyAll();
-                }
+                callbacks.get(player.getUniqueId()).done(input);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    synchronized Object get(org.bukkit.entity.Player p, String channel, String what, Object defaultv) {
+    synchronized void get(org.bukkit.entity.Player p, String channel, String what, Callback<String> callback) {
         sendToBungeeCord(p, channel, what);
-        try {
-            synchronized (Lock.LOCK) {
-                Lock.LOCK.wait(1000);
+        callbacks.put(p.getUniqueId(), new Callback<String>() {
+            public void done(String obj) {
+                Log.debug("Done. Result was: " + obj);
+                callback.done(obj);
             }
-        } catch (InterruptedException ignored){}
-        return obj.get(p) != null ? obj.get(p) : defaultv;
+        });
     }
 
     private void sendToBungeeCord(org.bukkit.entity.Player p, String channel, String sub){

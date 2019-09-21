@@ -61,10 +61,14 @@ public class PlayerUtils {
 		return ranks.getOrDefault(uuid, Ranks.DEFAULT);
 	}
 
-	public static Ranks refreshRank(org.bukkit.entity.Player player) {
-		Ranks rank = PluginMessageUtils.getRank(player);
-		ranks.add(player.getUniqueId(), rank);
-		return rank;
+	public static void refreshRank(org.bukkit.entity.Player player, Callback<Ranks> callback) {
+		PluginMessageUtils.getRank(player, new Callback<Ranks>() {
+			@Override
+			public void done(Ranks rank) {
+				ranks.add(player.getUniqueId(), rank);
+				callback.done(rank);
+			}
+		});
 	}
 
 	/**
