@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
@@ -92,14 +93,18 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		if (config.getBoolean("maintenance", false)) {
 			e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
 		}
-		PlayerUtils.refreshRank(e.getPlayer());
-		String name = PlayerUtils.getName(e.getPlayer());
-		e.getPlayer().setDisplayName(name);
-		e.getPlayer().setPlayerListName(name);
-		if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
-			e.getPlayer().setAllowFlight(true);
-			e.getPlayer().setFlying(true);
-		}
+		new BukkitRunnable() {
+			public void run() {
+				PlayerUtils.refreshRank(e.getPlayer());
+				String name = PlayerUtils.getName(e.getPlayer());
+				e.getPlayer().setDisplayName(name);
+				e.getPlayer().setPlayerListName(name);
+				if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
+					e.getPlayer().setAllowFlight(true);
+					e.getPlayer().setFlying(true);
+				}
+			}
+		}.runTask(this);
 		String gamemode = config.getString("gamemodeOnJoin");
 		if (gamemode != null) {
 			e.getPlayer().setGameMode(GameMode.valueOf(gamemode));

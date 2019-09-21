@@ -25,12 +25,12 @@ public class PluginChannelListener implements PluginMessageListener {
         }
     }
 
-    synchronized Object get(org.bukkit.entity.Player p, String channel, String what) {
+    synchronized Object get(org.bukkit.entity.Player p, String channel, String what, Object defaultv) {
         sendToBungeeCord(p, channel, what);
         try {
-            wait();
+            wait(10000);
         } catch (InterruptedException ignored){}
-        return obj.get(p);
+        return obj.get(p) != null ? obj.get(p) : defaultv;
     }
 
     private void sendToBungeeCord(org.bukkit.entity.Player p, String channel, String sub){
