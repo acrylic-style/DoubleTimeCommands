@@ -6,6 +6,7 @@ import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 
 import java.io.*;
 import util.Collection;
+import xyz.acrylicstyle.tomeito_core.utils.Log;
 
 public class PluginChannelListener implements PluginMessageListener {
     private static Collection<Player, String> obj = new Collection<>();
@@ -18,6 +19,10 @@ public class PluginChannelListener implements PluginMessageListener {
             if (subchannel.equals("rank")) {
                 String input = in.readUTF();
                 obj.put(player, input);
+                Log.debug("Received message!");
+                Log.debug("Channel: " + channel);
+                Log.debug("Subchannel: " + subchannel);
+                Log.debug("Input: " + input);
                 synchronized (Lock.LOCK) {
                     Lock.LOCK.notifyAll();
                 }
@@ -31,7 +36,7 @@ public class PluginChannelListener implements PluginMessageListener {
         sendToBungeeCord(p, channel, what);
         try {
             synchronized (Lock.LOCK) {
-                Lock.LOCK.wait(10000);
+                Lock.LOCK.wait(1000);
             }
         } catch (InterruptedException ignored){}
         return obj.get(p) != null ? obj.get(p) : defaultv;
