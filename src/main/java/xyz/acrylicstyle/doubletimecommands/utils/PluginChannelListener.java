@@ -18,7 +18,9 @@ public class PluginChannelListener implements PluginMessageListener {
             if (subchannel.equals("rank")) {
                 String input = in.readUTF();
                 obj.put(player, input);
-                notifyAll();
+                synchronized (Lock.LOCK) {
+                    Lock.LOCK.notifyAll();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,7 +30,9 @@ public class PluginChannelListener implements PluginMessageListener {
     synchronized Object get(org.bukkit.entity.Player p, String channel, String what, Object defaultv) {
         sendToBungeeCord(p, channel, what);
         try {
-            wait(10000);
+            synchronized (Lock.LOCK) {
+                Lock.LOCK.wait(10000);
+            }
         } catch (InterruptedException ignored){}
         return obj.get(p) != null ? obj.get(p) : defaultv;
     }
@@ -44,4 +48,8 @@ public class PluginChannelListener implements PluginMessageListener {
         }
         p.sendPluginMessage(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), "dtc:rank", b.toByteArray());
     }
+}
+
+class Lock {
+    final static Object LOCK = new Object();
 }
