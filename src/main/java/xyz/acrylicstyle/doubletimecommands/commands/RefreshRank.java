@@ -23,6 +23,9 @@ public class RefreshRank implements CommandExecutor {
                 sender.sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                 return true;
             }
+            String name = PlayerUtils.getName((Player)sender);
+            ((Player) sender).setDisplayName(name);
+            ((Player) sender).setPlayerListName(name);
             sender.sendMessage(ChatColor.GREEN + "Refreshed rank, new your rank is " + after.name() + "! Enjoy!");
         } catch (NullPointerException e) {
             Log.error("We got null while refreshing(fetching) rank!");
