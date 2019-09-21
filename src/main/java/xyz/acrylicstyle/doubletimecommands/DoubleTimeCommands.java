@@ -37,7 +37,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, this);
 		String apcePriority; // apce = AsyncPlayerChatEvent
 		String pcppPriority = null; // pcpp = PlayerCommandPreProcessEvent
-		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "bungeecord:main");
+		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "dtc:rank");
 		Bukkit.getMessenger().registerIncomingPluginChannel(this, "dtc:rank", pcl = new PluginChannelListener());
 		try {
 			apcePriority = ConfigProvider.getString("priority.AsyncPlayerChatEvent", "HIGHEST", "DoubleTimeCommands");
