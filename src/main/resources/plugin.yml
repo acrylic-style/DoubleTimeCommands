@@ -40,6 +40,6 @@ commands:
     description: "What a guy!"
     usage: /<command> [reason]
     permissions: doubletimecommands.commands.kickall
-  doubletimecommands.commands.*:
-    description: "Allows all commands or not"
-    default: op
+  refreshrank:
+    description: "Refreshes your rank."
+    usage: /<command>

@@ -8,7 +8,6 @@ import org.bukkit.plugin.EventExecutor;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 public class PlayerCommandPreprocess implements EventExecutor {

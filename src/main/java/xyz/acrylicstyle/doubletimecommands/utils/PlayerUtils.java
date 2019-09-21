@@ -1,19 +1,20 @@
 package xyz.acrylicstyle.doubletimecommands.utils;
 
-import java.util.Locale;
-import java.util.UUID;
-
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.OfflinePlayer;
-
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import util.CollectionSync;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
+import java.util.Locale;
+import java.util.UUID;
+
 public class PlayerUtils {
+	public static CollectionSync<UUID, Ranks> ranks = new CollectionSync<>();
+
 	/**
 	 * @param something UUID or username.
 	 * @param uuid Is "something" uuid or not
@@ -32,15 +33,19 @@ public class PlayerUtils {
 
 	public static String getName(org.bukkit.entity.Player player) {
 		try {
-			String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
-			Ranks rank = Ranks.valueOf(rankString);
-			return rank.getPrefix() + player.getName();
+			//String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
+			//Ranks rank = Ranks.valueOf(rankString);
+			return getRank(player.getUniqueId()).getPrefix() + player.getName();
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return ChatColor.GRAY + player.getName();
 		}
 	}
 
+	/**
+	 * Fetches offline player's name.<br>
+	 * <b>It uses LOCAL config!</b>
+	 */
 	public static String getName(OfflinePlayer player) {
 		try {
 			String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
@@ -53,9 +58,13 @@ public class PlayerUtils {
 	}
 
 	public static Ranks getRank(UUID uuid) {
-		try {
-			return Ranks.valueOf(ConfigProvider.getString("players." + uuid + ".rank", "DEFAULT", DoubleTimeCommands.file));
-		} catch (Exception e) { return Ranks.DEFAULT; }
+		return ranks.getOrDefault(uuid, Ranks.DEFAULT);
+	}
+
+	public static Ranks refreshRank(org.bukkit.entity.Player player) {
+		Ranks rank = PluginMessageUtils.getRank(player);
+		ranks.add(player.getUniqueId(), rank);
+		return rank;
 	}
 
 	/**
@@ -81,7 +90,6 @@ public class PlayerUtils {
 
 	/**
 	 * @param required Required rank for do something
-	 * @param sender anything extends CommandSender for check if they have required rank
 	 * @return True if the required rank equals actual rank
 	 * @example if (!PlayerUtils.must(Ranks.ADMIN, uuid)) System.out.println("they dont have permission fuck");
 	 */

@@ -17,22 +17,27 @@ import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
+import xyz.acrylicstyle.doubletimecommands.utils.PluginChannelListener;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
 	public static ConfigProvider bungee = null;
 	public static File file = null;
+	public static PluginChannelListener pcl = null;
 
 	public void onEnable() {
 		Log.info(" > Registering events");
 		Bukkit.getPluginManager().registerEvents(this, this);
 		String apcePriority; // apce = AsyncPlayerChatEvent
 		String pcppPriority = null; // pcpp = PlayerCommandPreProcessEvent
+		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		Bukkit.getMessenger().registerIncomingPluginChannel(this, "Rank", pcl = new PluginChannelListener());
 		try {
 			apcePriority = ConfigProvider.getString("priority.AsyncPlayerChatEvent", "HIGHEST", "DoubleTimeCommands");
 		} catch (IOException | InvalidConfigurationException e) {
@@ -61,14 +66,15 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, this, EventPriority.valueOf(apcePriority), new PlayerChat(), this);
 		Bukkit.getPluginManager().registerEvent(PlayerCommandPreprocessEvent.class, this, EventPriority.valueOf(pcppPriority), new PlayerCommandPreprocess(), this);
 		Log.info(" > Registering commands");
-		Bukkit.getPluginCommand("setspawnonjoin").setExecutor(new SetSpawnOnJoin());
-		Bukkit.getPluginCommand("nick").setExecutor(new SetNickname());
-		Bukkit.getPluginCommand("prefix").setExecutor(new SetPrefix());
-		Bukkit.getPluginCommand("resetnick").setExecutor(new ResetNickname());
-		Bukkit.getPluginCommand("resetprefix").setExecutor(new ResetPrefix());
-		Bukkit.getPluginCommand("setgamemodeonjoin").setExecutor(new SetGamemodeOnJoin());
-		Bukkit.getPluginCommand("maintenance").setExecutor(new Maintenance());
-		Bukkit.getPluginCommand("kickall").setExecutor(new KickAll());
+		Objects.requireNonNull(Bukkit.getPluginCommand("setspawnonjoin")).setExecutor(new SetSpawnOnJoin());
+		Objects.requireNonNull(Bukkit.getPluginCommand("nick")).setExecutor(new SetNickname());
+		Objects.requireNonNull(Bukkit.getPluginCommand("prefix")).setExecutor(new SetPrefix());
+		Objects.requireNonNull(Bukkit.getPluginCommand("resetnick")).setExecutor(new ResetNickname());
+		Objects.requireNonNull(Bukkit.getPluginCommand("resetprefix")).setExecutor(new ResetPrefix());
+		Objects.requireNonNull(Bukkit.getPluginCommand("setgamemodeonjoin")).setExecutor(new SetGamemodeOnJoin());
+		Objects.requireNonNull(Bukkit.getPluginCommand("maintenance")).setExecutor(new Maintenance());
+		Objects.requireNonNull(Bukkit.getPluginCommand("kickall")).setExecutor(new KickAll());
+		Objects.requireNonNull(Bukkit.getPluginCommand("refreshrank")).setExecutor(new RefreshRank());
 		Log.info(" > Enabled DoubleTimeCommands");
 	}
 
@@ -86,9 +92,11 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 		if (config.getBoolean("maintenance", false)) {
 			e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
 		}
-		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
-		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));
-		if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.VIP, e.getPlayer().getUniqueId())) {
+		PlayerUtils.refreshRank(e.getPlayer());
+		String name = PlayerUtils.getName(e.getPlayer());
+		e.getPlayer().setDisplayName(name);
+		e.getPlayer().setPlayerListName(name);
+		if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
 			e.getPlayer().setAllowFlight(true);
 			e.getPlayer().setFlying(true);
 		}
