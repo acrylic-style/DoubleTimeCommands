@@ -42,6 +42,6 @@ public class PluginChannelListener implements PluginMessageListener {
         } catch (IOException e) { // impossible?
             e.printStackTrace();
         }
-        p.sendPluginMessage(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), "bungeecord:main", b.toByteArray());
+        p.sendPluginMessage(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), "dtc:rank", b.toByteArray());
     }
 }
