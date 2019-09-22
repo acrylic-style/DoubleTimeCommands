@@ -3,7 +3,7 @@ package xyz.acrylicstyle.doubletimecommands.utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import util.CollectionSync;
+import util.CollectionStrictSync;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class PlayerUtils {
-	public static CollectionSync<UUID, Ranks> ranks = new CollectionSync<>();
+    public static CollectionStrictSync<UUID, Ranks> ranks = new CollectionStrictSync<>();
 
 	/**
 	 * @param something UUID or username.
