@@ -17,22 +17,25 @@ public class RefreshRank implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command should send from in-game.");
             return true;
         }
+        final Player player = (Player) sender;
+        Log.debug("UUID: " + player.getUniqueId());
+        Log.debug("Player name: " + player.getName() + ", Sender name: " + sender.getName());
         try {
-            Ranks before = PlayerUtils.getRank(((Player) sender).getUniqueId());
-            PlayerUtils.refreshRank((Player) sender, new Callback<Ranks>() {
+            Ranks before = PlayerUtils.getRank(player.getUniqueId());
+            PlayerUtils.refreshRank(player, new Callback<Ranks>() {
                 @Override
                 public void done(Ranks after) {
-                    Log.debug("Result for " + ((Player) sender).getUniqueId() + ": " + after.name());
-                    String name = PlayerUtils.getName((Player) sender, after);
-                    ((Player) sender).setDisplayName(name);
-                    ((Player) sender).setPlayerListName(name);
+                    Log.debug("Result for " + player.getUniqueId() + ": " + after.name());
+                    String name = PlayerUtils.getName(player, after);
+                    player.setDisplayName(name);
+                    player.setPlayerListName(name);
                     if (before.equals(after)) {
                         Log.debug("No updates.");
-                        sender.sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
+                        player.sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                         return;
                     }
                     Log.debug("New rank: " + after.name() + " from " + before.name());
-                    sender.sendMessage(ChatColor.GREEN + "Refreshed rank, new your rank is " + after.name() + "! Enjoy!");
+                    player.sendMessage(ChatColor.GREEN + "Refreshed rank, new your rank is " + after.name() + "! Enjoy!");
                 }
             });
         } catch (NullPointerException e) {
