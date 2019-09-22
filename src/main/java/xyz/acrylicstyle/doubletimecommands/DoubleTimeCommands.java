@@ -99,7 +99,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                 PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
                     @Override
                     public void done(Ranks rank) {
-                        String name = PlayerUtils.getName(e.getPlayer());
+                        String name = PlayerUtils.getName(e.getPlayer(), rank);
                         e.getPlayer().setDisplayName(name);
                         e.getPlayer().setPlayerListName(name);
                         if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
