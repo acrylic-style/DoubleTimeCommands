@@ -9,7 +9,6 @@ import java.io.*;
 import java.util.UUID;
 
 public class PluginChannelListener implements PluginMessageListener {
-    private static Collection<UUID, String> obj = new Collection<>();
     private static Collection<UUID, Callback<String>> callbacks = new Collection<>();
 
     @Override
@@ -24,18 +23,18 @@ public class PluginChannelListener implements PluginMessageListener {
                 Log.debug("Channel: " + channel);
                 Log.debug("Subchannel: " + subchannel);
                 Log.debug("Input: " + input);
-                callbacks.get(player.getUniqueId()).done(input);
+                callbacks.get(player.getUniqueId()).done(input, null);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            callbacks.get(player.getUniqueId()).done(null, e);
         }
     }
 
     synchronized void get(org.bukkit.entity.Player p, String channel, String what, Callback<String> callback) {
         sendToBungeeCord(p, channel, what);
         callbacks.put(p.getUniqueId(), new Callback<String>() {
-            public void done(String obj) {
-                callback.done(obj);
+            public void done(String obj, Throwable e) {
+                callback.done(obj, e);
             }
         });
     }

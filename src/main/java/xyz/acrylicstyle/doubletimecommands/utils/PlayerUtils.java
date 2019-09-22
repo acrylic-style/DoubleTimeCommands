@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class PlayerUtils {
-    public static CollectionStrictSync<UUID, Ranks> ranks = new CollectionStrictSync<>();
+    private static CollectionStrictSync<UUID, Ranks> ranks = new CollectionStrictSync<>();
 
 	/**
 	 * @param something UUID or username.
@@ -68,9 +68,9 @@ public class PlayerUtils {
 	public static void refreshRank(org.bukkit.entity.Player player, Callback<Ranks> callback) {
 		PluginMessageUtils.getRank(player, new Callback<Ranks>() {
 			@Override
-			public void done(Ranks rank) {
+            public void done(Ranks rank, Throwable e) {
 				ranks.add(player.getUniqueId(), rank);
-				callback.done(rank);
+                callback.done(rank, null);
 			}
 		});
 	}

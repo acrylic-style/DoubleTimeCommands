@@ -98,7 +98,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
             public void run() {
                 PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
                     @Override
-                    public void done(Ranks rank) {
+                    public void done(Ranks rank, Throwable ex) {
                         String name = PlayerUtils.getName(e.getPlayer(), rank);
                         e.getPlayer().setDisplayName(name);
                         e.getPlayer().setPlayerListName(name);

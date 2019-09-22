@@ -18,24 +18,25 @@ public class RefreshRank implements CommandExecutor {
             return true;
         }
         final Player player = (Player) sender;
+        final Player player2 = (Player) sender;
         Log.debug("UUID: " + player.getUniqueId());
         Log.debug("Player name: " + player.getName() + ", Sender name: " + sender.getName());
         try {
             Ranks before = PlayerUtils.getRank(player.getUniqueId());
             PlayerUtils.refreshRank(player, new Callback<Ranks>() {
                 @Override
-                public void done(Ranks after) {
-                    Log.debug("Result for " + player.getUniqueId() + ": " + after.name());
-                    String name = PlayerUtils.getName(player, after);
-                    player.setDisplayName(name);
-                    player.setPlayerListName(name);
+                public void done(Ranks after, Throwable e) {
+                    Log.debug("Result for " + player2.getUniqueId() + ": " + after.name());
+                    String name = PlayerUtils.getName(player2, after);
+                    player2.setDisplayName(name);
+                    player2.setPlayerListName(name);
                     if (before.equals(after)) {
                         Log.debug("No updates.");
-                        player.sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
+                        player2.sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                         return;
                     }
                     Log.debug("New rank: " + after.name() + " from " + before.name());
-                    player.sendMessage(ChatColor.GREEN + "Refreshed rank, new your rank is " + after.name() + "! Enjoy!");
+                    player2.sendMessage(ChatColor.GREEN + "Refreshed rank, new your rank is " + after.name() + "! Enjoy!");
                 }
             });
         } catch (NullPointerException e) {
