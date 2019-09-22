@@ -22,10 +22,13 @@ public class RefreshRank implements CommandExecutor {
             PlayerUtils.refreshRank((Player) sender, new Callback<Ranks>() {
                 @Override
                 public void done(Ranks after) {
+                    Log.debug("Result for " + ((Player) sender).getUniqueId() + ": " + after.name());
                     if (before.equals(after)) {
+                        Log.debug("No updates.");
                         sender.sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                         return;
                     }
+                    Log.debug("New rank: " + after.name() + " from " + before.name());
                     String name = PlayerUtils.getName((Player) sender);
                     ((Player) sender).setDisplayName(name);
                     ((Player) sender).setPlayerListName(name);

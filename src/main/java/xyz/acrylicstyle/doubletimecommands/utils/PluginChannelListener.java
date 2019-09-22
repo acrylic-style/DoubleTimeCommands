@@ -35,7 +35,6 @@ public class PluginChannelListener implements PluginMessageListener {
         sendToBungeeCord(p, channel, what);
         callbacks.put(p.getUniqueId(), new Callback<String>() {
             public void done(String obj) {
-                Log.debug("Done. Result was: " + obj);
                 callback.done(obj);
             }
         });
@@ -52,8 +51,4 @@ public class PluginChannelListener implements PluginMessageListener {
         }
         p.sendPluginMessage(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), "dtc:rank", b.toByteArray());
     }
-}
-
-class Lock {
-    final static Object LOCK = new Object();
 }
