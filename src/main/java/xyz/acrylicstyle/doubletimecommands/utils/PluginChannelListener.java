@@ -1,7 +1,7 @@
 package xyz.acrylicstyle.doubletimecommands.utils;
 
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import util.Collection;
+import util.CollectionStrictSync;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 
@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.UUID;
 
 public class PluginChannelListener implements PluginMessageListener {
-    private static Collection<UUID, Callback<String>> callbacks = new Collection<>();
+    private static CollectionStrictSync<UUID, Callback<String>> callbacks = new CollectionStrictSync<>();
 
     @Override
     public synchronized void onPluginMessageReceived(String channel, org.bukkit.entity.Player player, byte[] message) {
@@ -27,16 +27,14 @@ public class PluginChannelListener implements PluginMessageListener {
             }
         } catch (IOException e) {
             callbacks.get(player.getUniqueId()).done(null, e);
+        } finally {
+            callbacks.remove(player.getUniqueId());
         }
     }
 
     synchronized void get(org.bukkit.entity.Player p, String channel, String what, Callback<String> callback) {
         sendToBungeeCord(p, channel, what);
-        callbacks.put(p.getUniqueId(), new Callback<String>() {
-            public void done(String obj, Throwable e) {
-                callback.done(obj, e);
-            }
-        });
+        callbacks.put(p.getUniqueId(), callback);
     }
 
     private void sendToBungeeCord(org.bukkit.entity.Player p, String channel, String sub){
