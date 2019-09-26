@@ -6,7 +6,7 @@ import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 class PluginMessageUtils {
     static void getRank(Player player, Callback<Ranks> callback) {
-        DoubleTimeCommands.pcl.get(player, "rank", player.getUniqueId().toString(), new Callback<String>() {
+        DoubleTimeCommands.pcl.get(player, player.getUniqueId().toString(), "", new Callback<String>() { // message isn't used
             @Override
             public void done(String rank, Throwable e) {
                 if (rank == null && e != null) { // it shouldn't happen... if happened, check the proxy log
