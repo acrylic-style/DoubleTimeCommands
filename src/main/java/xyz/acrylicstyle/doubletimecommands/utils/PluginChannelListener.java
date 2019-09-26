@@ -23,6 +23,7 @@ public class PluginChannelListener implements PluginMessageListener {
                 Log.debug("Channel: " + channel);
                 Log.debug("Subchannel: " + subchannel);
                 Log.debug("Input: " + input);
+                Log.debug("Player: " + player.getUniqueId());
                 callbacks.get(player.getUniqueId()).done(input, null);
             }
         } catch (IOException e) {
