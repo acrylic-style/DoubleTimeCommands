@@ -12,16 +12,16 @@ public class PluginChannelListener implements PluginMessageListener {
 
     @Override
     public synchronized void onPluginMessageReceived(String tag, org.bukkit.entity.Player player, byte[] message) {
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
         try {
+            DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
+            String subchannel = in.readUTF();
+            String input = in.readUTF(); // message
+            Log.debug("Received message!");
+            Log.debug("Tag: " + tag);
+            Log.debug("Subchannel: " + subchannel);
+            Log.debug("Input: " + input);
+            Log.debug("Player: " + player.getUniqueId());
             if (tag.equalsIgnoreCase("dtc:rank")) {
-                String subchannel = in.readUTF();
-                String input = in.readUTF(); // message
-                Log.debug("Received message!");
-                Log.debug("Tag: " + tag);
-                Log.debug("Subchannel: " + subchannel);
-                Log.debug("Input: " + input);
-                Log.debug("Player: " + player.getUniqueId());
                 callbacks.get(subchannel).done(input, null);
                 callbacks.remove(subchannel);
             }
