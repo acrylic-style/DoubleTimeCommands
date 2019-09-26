@@ -3,7 +3,6 @@ package xyz.acrylicstyle.doubletimecommands.utils;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import util.CollectionStrictSync;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
 
 import java.io.*;
 
@@ -16,11 +15,13 @@ public class PluginChannelListener implements PluginMessageListener {
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
             String subchannel = in.readUTF();
             String input = in.readUTF(); // message
+            /* // debug messages
             Log.debug("Received message!");
             Log.debug("Tag: " + tag);
             Log.debug("Subchannel: " + subchannel);
             Log.debug("Input: " + input);
             Log.debug("Player: " + player.getUniqueId());
+            */
             if (tag.equalsIgnoreCase("dtc:rank")) {
                 callbacks.get(subchannel).done(input, null);
                 callbacks.remove(subchannel);

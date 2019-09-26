@@ -21,23 +21,18 @@ public class RefreshRank implements CommandExecutor {
         }
         final AtomicReference<Player> player = new AtomicReference<>();
         player.set((Player) sender);
-        Log.debug("UUID: " + player.get().getUniqueId());
-        Log.debug("Player name: " + player.get().getName() + ", Sender name: " + sender.getName());
         try {
             Ranks before = PlayerUtils.getRank(player.get().getUniqueId());
             PlayerUtils.refreshRank(player.get(), new Callback<Ranks>() {
                 @Override
                 public void done(Ranks after, Throwable e) {
-                    Log.debug("Result for " + player.get().getUniqueId() + ": " + after.name());
                     String name = PlayerUtils.getName(player.get(), after);
                     player.get().setDisplayName(name);
                     player.get().setPlayerListName(name);
                     if (before.equals(after)) {
-                        Log.debug("No updates.");
                         player.get().sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                         return;
                     }
-                    Log.debug("New rank: " + after.name() + " from " + before.name());
                     player.get().sendMessage(ChatColor.GREEN + "Refreshed rank, new your rank is " + after.name() + "! Enjoy!");
                 }
             });
