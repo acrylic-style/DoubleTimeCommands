@@ -18,7 +18,6 @@ import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
-import xyz.acrylicstyle.tomeito_core.connection.PluginChannelListener;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
@@ -37,11 +36,6 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         String apcePriority; // apce = AsyncPlayerChatEvent
         String pcppPriority = null; // pcpp = PlayerCommandPreProcessEvent
-        PluginChannelListener pcl = new PluginChannelListener();
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "dtc:rank");
-        Bukkit.getMessenger().registerIncomingPluginChannel(this, "dtc:rank", pcl);
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "commons:transfer");
-        Bukkit.getMessenger().registerIncomingPluginChannel(this, "commons:transfer", pcl);
         try {
             apcePriority = ConfigProvider.getString("priority.AsyncPlayerChatEvent", "HIGHEST", "DoubleTimeCommands");
         } catch (IOException | InvalidConfigurationException e) {
