@@ -43,3 +43,6 @@ commands:
   refreshrank:
     description: "Refreshes your rank."
     usage: /<command>
+  transfer:
+    description: "Transfer player to the specific game."
+    usage: /<command> <game>

@@ -14,7 +14,11 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.json:json:20180813" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
-    <orderEntry type="library" name="Maven: xyz.acrylicstyle:tomeito_core:33" level="project" />
+    <orderEntry type="library" name="Maven: xyz.acrylicstyle:tomeito_lib:0.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.10" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.12" level="project" />
+    <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.11" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.14.3-R0.1-SNAPSHOT" level="project" />
@@ -25,6 +29,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.23" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:1.3.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.14.3-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: xyz.acrylicstyle:Util:0.1.0" level="project" />
+    <orderEntry type="library" name="Maven: xyz.acrylicstyle:Util:0.2.1" level="project" />
   </component>
 </module>

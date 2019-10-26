@@ -6,7 +6,9 @@ import org.bukkit.command.CommandSender;
 import util.CollectionStrictSync;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 import java.util.Locale;
@@ -76,10 +78,11 @@ public class PlayerUtils {
 	}
 
 	/**
+     * example: <pre>if (!PlayerUtils.must(Ranks.ADMIN, player)) return; // it sends message automatically, so do only return</pre>
+     *
 	 * @param required Required rank for do something
 	 * @param sender anything extends CommandSender for check if they have Admin rank
 	 * @return True if the required rank equals actual rank but console always returns true
-	 * @example if (!PlayerUtils.must(Ranks.ADMIN, player)) return; // it sends message automatically, so do only return
 	 */
 	public static boolean must(Ranks required, CommandSender sender) {
 		if (!(sender instanceof org.bukkit.entity.Player)) {
