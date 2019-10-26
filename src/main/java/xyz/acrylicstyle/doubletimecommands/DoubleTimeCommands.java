@@ -7,16 +7,14 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
+import xyz.acrylicstyle.doubletimecommands.events.PlayerMove;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
@@ -30,8 +28,18 @@ import java.util.Objects;
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static ConfigProvider bungee = null;
     public static File file = null;
+    private static ConfigProvider config = null;
 
     public void onEnable() {
+        Log.info(" > Loading config");
+        try {
+            config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
+        } catch (Exception ex) {
+            Log.error("Error while loading configuration:");
+            ex.printStackTrace();
+            ex.getCause().printStackTrace();
+            return;
+        }
         Log.info(" > Registering events");
         Bukkit.getPluginManager().registerEvents(this, this);
         String apcePriority; // apce = AsyncPlayerChatEvent
@@ -63,6 +71,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         }
         Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, this, EventPriority.valueOf(apcePriority), new PlayerChat(), this);
         Bukkit.getPluginManager().registerEvent(PlayerCommandPreprocessEvent.class, this, EventPriority.valueOf(pcppPriority), new PlayerCommandPreprocess(), this);
+        if (config.getBoolean("voidless", false)) Bukkit.getPluginManager().registerEvent(PlayerMoveEvent.class, this, EventPriority.NORMAL, new PlayerMove(), this);
         Log.info(" > Registering commands");
         Objects.requireNonNull(Bukkit.getPluginCommand("setspawnonjoin")).setExecutor(new SetSpawnOnJoin());
         Objects.requireNonNull(Bukkit.getPluginCommand("nick")).setExecutor(new SetNickname());
@@ -79,15 +88,6 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        ConfigProvider config;
-        try {
-            config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
-        } catch (Exception ex) {
-            Log.error("Error while loading configuration:");
-            ex.printStackTrace();
-            ex.getCause().printStackTrace();
-            return;
-        }
         if (config.getBoolean("maintenance", false)) {
             e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
         }
