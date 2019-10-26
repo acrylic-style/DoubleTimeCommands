@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
 import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
 
 public class Transfer implements CommandExecutor {
@@ -24,7 +23,7 @@ public class Transfer implements CommandExecutor {
         PluginMessageUtils.get(player, args[0], "commons:transfer", new Callback<String>() {
             @Override
             public void done(String s, Throwable throwable) {
-                Log.debug("Done transfer with " + player.getUniqueId() + ": " + s);
+                // do nothing
             }
         });
         return true;
