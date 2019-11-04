@@ -103,6 +103,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                             e.getPlayer().setAllowFlight(true);
                             e.getPlayer().setFlying(true);
                         }
+                        PlayerUtils.changeName(name, e.getPlayer());
                     }
                 });
                 PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
@@ -115,6 +116,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                             e.getPlayer().setAllowFlight(true);
                             e.getPlayer().setFlying(true);
                         }
+                        PlayerUtils.changeName(name, e.getPlayer());
                     }
                 });
             }
