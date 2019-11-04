@@ -28,7 +28,7 @@ import java.util.Objects;
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static ConfigProvider bungee = null;
     public static File file = null;
-    private static ConfigProvider config = null;
+    public static ConfigProvider config = null;
 
     public void onEnable() {
         Log.info(" > Loading config");
@@ -107,20 +107,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                     }
                 });
             }
-        }.runTask(this);
-        PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
-            @Override
-            public void done(Ranks rank, Throwable ex) {
-                String name = PlayerUtils.getName(e.getPlayer(), rank);
-                e.getPlayer().setDisplayName(name);
-                e.getPlayer().setPlayerListName(name);
-                if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
-                    e.getPlayer().setAllowFlight(true);
-                    e.getPlayer().setFlying(true);
-                }
-                PlayerUtils.changeName(name, e.getPlayer());
-            }
-        });
+        }.runTaskLater(this, 1000);
         String gamemode = config.getString("gamemodeOnJoin");
         if (gamemode != null) {
             e.getPlayer().setGameMode(GameMode.valueOf(gamemode));

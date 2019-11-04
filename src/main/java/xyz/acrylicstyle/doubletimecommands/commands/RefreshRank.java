@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
@@ -29,6 +30,11 @@ public class RefreshRank implements CommandExecutor {
                     String name = PlayerUtils.getName(player.get(), after);
                     player.get().setDisplayName(name);
                     player.get().setPlayerListName(name);
+                    if (DoubleTimeCommands.config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, player.get().getUniqueId())) {
+                        player.get().setAllowFlight(true);
+                        player.get().setFlying(true);
+                    }
+                    PlayerUtils.changeName(name, player.get());
                     if (before.equals(after)) {
                         player.get().sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                         return;
