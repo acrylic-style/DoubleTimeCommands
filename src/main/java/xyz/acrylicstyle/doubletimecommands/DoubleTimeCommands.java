@@ -106,21 +106,21 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                         PlayerUtils.changeName(name, e.getPlayer());
                     }
                 });
-                PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
-                    @Override
-                    public void done(Ranks rank, Throwable ex) {
-                        String name = PlayerUtils.getName(e.getPlayer(), rank);
-                        e.getPlayer().setDisplayName(name);
-                        e.getPlayer().setPlayerListName(name);
-                        if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
-                            e.getPlayer().setAllowFlight(true);
-                            e.getPlayer().setFlying(true);
-                        }
-                        PlayerUtils.changeName(name, e.getPlayer());
-                    }
-                });
             }
         }.runTask(this);
+        PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
+            @Override
+            public void done(Ranks rank, Throwable ex) {
+                String name = PlayerUtils.getName(e.getPlayer(), rank);
+                e.getPlayer().setDisplayName(name);
+                e.getPlayer().setPlayerListName(name);
+                if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
+                    e.getPlayer().setAllowFlight(true);
+                    e.getPlayer().setFlying(true);
+                }
+                PlayerUtils.changeName(name, e.getPlayer());
+            }
+        });
         String gamemode = config.getString("gamemodeOnJoin");
         if (gamemode != null) {
             e.getPlayer().setGameMode(GameMode.valueOf(gamemode));
