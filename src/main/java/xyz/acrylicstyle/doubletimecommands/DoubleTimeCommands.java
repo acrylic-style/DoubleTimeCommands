@@ -88,6 +88,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
+        e.setJoinMessage(null);
         if (config.getBoolean("maintenance", false)) {
             e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
         }
@@ -102,12 +103,13 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                         if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
                             e.getPlayer().setAllowFlight(true);
                             e.getPlayer().setFlying(true);
+                            if (rank.ordinal() >= Ranks.SAND.ordinal()) Bukkit.broadcastMessage(name + ChatColor.AQUA + " joined the lobby!");
                         }
                         PlayerUtils.changeName(name, e.getPlayer());
                     }
                 });
             }
-        }.runTaskLater(this, 1000);
+        }.runTaskLater(this, 2000);
         String gamemode = config.getString("gamemodeOnJoin");
         if (gamemode != null) {
             e.getPlayer().setGameMode(GameMode.valueOf(gamemode));
