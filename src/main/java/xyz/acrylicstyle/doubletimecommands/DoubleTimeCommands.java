@@ -109,7 +109,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                     }
                 });
             }
-        }.runTaskLater(this, 2000);
+        }.runTask(this);
         String gamemode = config.getString("gamemodeOnJoin");
         if (gamemode != null) {
             e.getPlayer().setGameMode(GameMode.valueOf(gamemode));
