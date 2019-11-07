@@ -17,9 +17,9 @@ public class Server {
     private final String gamePrefix;
 
     public Server(String name, String category, String description, Material item, String gamePrefix) {
-        this.name = ChatColor.translateAlternateColorCodes('&', name);
-        this.category = ChatColor.translateAlternateColorCodes('&', category);
-        this.description = ChatColor.translateAlternateColorCodes('&', description);
+        this.name = ChatColor.GREEN + ChatColor.translateAlternateColorCodes('&', name);
+        this.category = ChatColor.DARK_GRAY + ChatColor.translateAlternateColorCodes('&', category);
+        this.description = ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', description);
         this.item = item;
         this.gamePrefix = gamePrefix.toUpperCase();
     }
