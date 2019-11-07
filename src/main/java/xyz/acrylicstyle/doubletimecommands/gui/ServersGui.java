@@ -59,9 +59,9 @@ public class ServersGui implements InventoryHolder, Listener {
         new BukkitRunnable() {
             public void run() {
                 cycle = !cycle;
-                servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, String.format(playingText, playing.get(i)))));
+                servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, String.format(playingText, playing.getOrDefault(i, "0")))));
             }
-        }.runTaskTimer(this.plugin, 0, 500);
+        }.runTaskTimer(this.plugin, 0, 10);
         new BukkitRunnable() {
             public void run() {
                 if (Bukkit.getOnlinePlayers().size() <= 0) return;
@@ -72,7 +72,7 @@ public class ServersGui implements InventoryHolder, Listener {
                     }
                 }));
             }
-        }.runTaskTimer(this.plugin, 0, 3000);
+        }.runTaskTimer(this.plugin, 0, 20*3);
     }
 
     @Override
