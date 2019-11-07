@@ -3,7 +3,9 @@ package xyz.acrylicstyle.doubletimecommands.gui;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,6 +27,7 @@ public class ServersGui implements InventoryHolder, Listener {
     private Inventory inventory;
     private boolean cycle = false;
     private Collection<Integer, Server> servers = new Collection<>();
+    private Collection<String, Server> itemNames = new Collection<>();
     private Collection<Integer, String> playing = new Collection<>();
 
     public ServersGui() {
@@ -43,6 +46,7 @@ public class ServersGui implements InventoryHolder, Listener {
             String gamePrefix = config.getString("servers.slot" + i + ".gamePrefix", "");
             Server server = new Server(name, category, description, item, Objects.requireNonNull(gamePrefix));
             servers.add(i, server);
+            itemNames.add(server.getName(), server);
             this.inventory.setItem(i, server.toItemStack(ctc1, String.format(playingText, "0")));
         }
         new BukkitRunnable() {
@@ -67,5 +71,20 @@ public class ServersGui implements InventoryHolder, Listener {
     @Override
     public Inventory getInventory() {
         return this.inventory;
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getClickedInventory() == null) return;
+        if (e.getClickedInventory().getHolder() != this || e.getCurrentItem() == null) return;
+        e.setCancelled(true);
+        String name = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName();
+        if (!itemNames.containsKey(name)) return;
+        PluginMessageUtils.get(Objects.requireNonNull(Bukkit.getPlayer(e.getWhoClicked().getUniqueId())), itemNames.get(name).getGamePrefix(), "commons:transfer2", new Callback<String>() {
+            @Override
+            public void done(String s, Throwable throwable) {
+                // do nothing
+            }
+        });
     }
 }

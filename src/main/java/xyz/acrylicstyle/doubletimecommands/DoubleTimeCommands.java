@@ -3,12 +3,15 @@ package xyz.acrylicstyle.doubletimecommands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.acrylicstyle.doubletimecommands.commands.*;
@@ -24,6 +27,8 @@ import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
@@ -31,6 +36,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static File file = null;
     public static ConfigProvider config = null;
     public static ServersGui serversGui = new ServersGui();
+    private String gameMenuText = ChatColor.GREEN + "Game Menu" + ChatColor.GRAY + " (Right Click)";
 
     public void onEnable() {
         Log.info(" > Loading config");
@@ -73,6 +79,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         }
         Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, this, EventPriority.valueOf(apcePriority), new PlayerChat(), this);
         Bukkit.getPluginManager().registerEvent(PlayerCommandPreprocessEvent.class, this, EventPriority.valueOf(pcppPriority), new PlayerCommandPreprocess(), this);
+        Bukkit.getPluginManager().registerEvents(serversGui, this);
         if (config.getBoolean("voidless", false)) Bukkit.getPluginManager().registerEvent(PlayerMoveEvent.class, this, EventPriority.NORMAL, new PlayerMove(), this);
         Log.info(" > Registering commands");
         Objects.requireNonNull(Bukkit.getPluginCommand("setspawnonjoin")).setExecutor(new SetSpawnOnJoin());
@@ -89,11 +96,32 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         Log.info(" > Enabled DoubleTimeCommands");
     }
 
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+        if (config.getBoolean("gameMenu", false)) {
+            if (Objects.requireNonNull(Objects.requireNonNull(e.getItem()).getItemMeta()).getDisplayName().equals(gameMenuText)) { // ?????
+                e.getPlayer().openInventory(serversGui.getInventory());
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
         if (config.getBoolean("maintenance", false)) {
             e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
+        }
+        e.getPlayer().getInventory().clear();
+        if (config.getBoolean("gameMenu", false)) {
+            ItemStack gameMenu = new ItemStack(Material.COMPASS);
+            ItemMeta meta = gameMenu.getItemMeta();
+            assert meta != null;
+            meta.setDisplayName(gameMenuText);
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "Right Click this to open Game Menu!");
+            meta.setLore(lore);
+            gameMenu.setItemMeta(meta);
+            e.getPlayer().getInventory().setItem(0, gameMenu);
         }
         new BukkitRunnable() {
             public void run() {
