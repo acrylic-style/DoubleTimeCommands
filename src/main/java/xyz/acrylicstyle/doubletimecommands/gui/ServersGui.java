@@ -65,7 +65,8 @@ public class ServersGui implements InventoryHolder, Listener {
         new BukkitRunnable() {
             public void run() {
                 if (Bukkit.getOnlinePlayers().size() <= 0) return;
-                servers.forEach((i, server) -> PluginMessageUtils.get(new CollectionList<Player>(Bukkit.getOnlinePlayers()).first(), server.getGamePrefix(), "dtc:playing", new Callback<String>() {
+                Player player = new CollectionList<Player>(Bukkit.getOnlinePlayers()).first();
+                servers.forEach((i, server) -> PluginMessageUtils.get(player, server.getGamePrefix(), player.getUniqueId() + "," + server.getGamePrefix(), "dtc:playing", new Callback<String>() {
                     @Override
                     public void done(String s, Throwable throwable) {
                         playing.add(i, s);
