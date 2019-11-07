@@ -94,7 +94,8 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("kickall")).setExecutor(new KickAll());
         Objects.requireNonNull(Bukkit.getPluginCommand("refreshrank")).setExecutor(new RefreshRank());
         Objects.requireNonNull(Bukkit.getPluginCommand("transfer")).setExecutor(new Transfer());
-        Objects.requireNonNull(Bukkit.getPluginCommand("servers")).setExecutor(new Servers());
+        if (config.getBoolean("lobby", false)) Objects.requireNonNull(Bukkit.getPluginCommand("servers")).setExecutor(new Servers());
+        if (config.getBoolean("lobby", false)) Objects.requireNonNull(Bukkit.getPluginCommand("spawn")).setExecutor(new Spawn());
         Log.info(" > Enabled DoubleTimeCommands");
     }
 

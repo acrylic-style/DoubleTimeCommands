@@ -49,3 +49,8 @@ commands:
   servers:
     description: "Shows server list"
     usage: /<command>
+  spawn:
+    description: "Teleports you to the world spawn point"
+    usage: /<command>
+    aliases:
+      - "stuck"
