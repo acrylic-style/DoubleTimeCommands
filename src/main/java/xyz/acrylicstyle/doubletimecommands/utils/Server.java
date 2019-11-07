@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Server {
+    private final char heavy_multiplication_x = '\u2716';
+    private final String playingText = "%s currently playing!";
     private final String name;
     private final String category;
     private final String description;
@@ -42,8 +44,9 @@ public class Server {
         String[] lines = getDescription().split("\\\\n");
         Arrays.asList(lines).forEach(str -> lore.add(ChatColor.GRAY + str));
         lore.add("");
-        lore.add(ChatColor.GREEN + s);
-        lore.add(ChatColor.GRAY + playing);
+        if (!playing.equals("-1")) lore.add(ChatColor.GREEN + s);
+        if (playing.equals("-1")) lore.add("" + ChatColor.RED + heavy_multiplication_x + " Offline!");
+        if (!playing.equals("-1")) lore.add(ChatColor.GRAY + String.format(playingText, playing));
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.setLore(lore);
         item.setItemMeta(meta);

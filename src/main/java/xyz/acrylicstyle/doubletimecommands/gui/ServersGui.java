@@ -23,7 +23,6 @@ import static xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands.config;
 public class ServersGui implements InventoryHolder, Listener {
     private String ctc1 = "➤ Click to Connect";
     private String ctc2 = "   Click to Connect";
-    private String playingText = "%s currently playing!";
     private Inventory inventory;
     private boolean cycle = false;
     private Collection<Integer, Server> servers = new Collection<>();
@@ -54,12 +53,12 @@ public class ServersGui implements InventoryHolder, Listener {
             Server server = new Server(name, category, description, item, Objects.requireNonNull(gamePrefix));
             servers.add(i, server);
             itemNames.add(server.getName(), server);
-            this.inventory.setItem(i, server.toItemStack(ctc1, String.format(playingText, "0")));
+            this.inventory.setItem(i, server.toItemStack(ctc1, "0"));
         }
         new BukkitRunnable() {
             public void run() {
                 cycle = !cycle;
-                servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, String.format(playingText, playing.getOrDefault(i, "0")))));
+                servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, playing.getOrDefault(i, "0"))));
             }
         }.runTaskTimer(this.plugin, 0, 10);
         new BukkitRunnable() {
@@ -86,6 +85,7 @@ public class ServersGui implements InventoryHolder, Listener {
         if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getHolder() != this || e.getCurrentItem() == null) return;
         e.setCancelled(true);
+        e.getWhoClicked().closeInventory();
         String name = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName();
         if (!itemNames.containsKey(name)) return;
         PluginMessageUtils.get(Objects.requireNonNull(Bukkit.getPlayer(e.getWhoClicked().getUniqueId())), itemNames.get(name).getGamePrefix(), "commons:transfer2", new Callback<String>() {

@@ -13,6 +13,6 @@ public class PlayerChat implements EventExecutor {
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
 		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
 		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));
-		e.setFormat(ChatColor.translateAlternateColorCodes('&', PlayerUtils.getName(e.getPlayer()) + "&r&f: " + e.getMessage()));
+		e.setFormat(ChatColor.translateAlternateColorCodes('&', e.getPlayer().getName() + "&r&f: " + e.getMessage()));
 	}
 }
