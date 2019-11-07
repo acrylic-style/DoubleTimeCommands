@@ -22,7 +22,7 @@ import static xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands.config;
 
 public class ServersGui implements InventoryHolder, Listener {
     private String ctc1 = "➤ Click to Connect";
-    private String ctc2 = "  Click to Connect";
+    private String ctc2 = "   Click to Connect";
     private String playingText = "%s currently playing!";
     private Inventory inventory;
     private boolean cycle = false;
