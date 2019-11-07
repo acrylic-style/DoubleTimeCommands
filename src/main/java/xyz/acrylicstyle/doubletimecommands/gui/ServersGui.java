@@ -1,6 +1,7 @@
 package xyz.acrylicstyle.doubletimecommands.gui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -88,6 +89,10 @@ public class ServersGui implements InventoryHolder, Listener {
         e.getWhoClicked().closeInventory();
         String name = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName();
         if (!itemNames.containsKey(name)) return;
+        if (playing.get(servers.values(itemNames.get(name)).firstKey()).equals("-1")) {
+            e.getWhoClicked().sendMessage(ChatColor.RED + "This game is currently offline!");
+            return;
+        }
         PluginMessageUtils.get(Objects.requireNonNull(Bukkit.getPlayer(e.getWhoClicked().getUniqueId())), itemNames.get(name).getGamePrefix(), "commons:transfer2", new Callback<String>() {
             @Override
             public void done(String s, Throwable throwable) {
