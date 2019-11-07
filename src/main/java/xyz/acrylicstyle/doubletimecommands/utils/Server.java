@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Server {
-    private final char heavy_multiplication_x = '\u2716';
-    private final String playingText = "%s currently playing!";
     private final String name;
     private final String category;
     private final String description;
@@ -32,7 +30,7 @@ public class Server {
     public String getDescription() { return this.description; }
     public Material getItem() { return this.item; }
     public String getGamePrefix() { return this.gamePrefix; }
-    public ItemStack toItemStack(String s, String playing) {
+    public ItemStack toItemStack(String s, String playing, String availableGames) {
         ItemStack item = new ItemStack(getItem());
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
@@ -45,8 +43,11 @@ public class Server {
         Arrays.asList(lines).forEach(str -> lore.add(ChatColor.GRAY + str));
         lore.add("");
         if (!playing.equals("-1")) lore.add(ChatColor.GREEN + s);
+        char heavy_multiplication_x = '\u2716';
         if (playing.equals("-1")) lore.add("" + ChatColor.RED + heavy_multiplication_x + " Offline!");
-        if (!playing.equals("-1")) lore.add(ChatColor.GRAY + String.format(playingText, playing));
+        String availGamesText = "(%s games available)";
+        String playingText = "%s currently playing! ";
+        if (!playing.equals("-1")) lore.add(ChatColor.GRAY + String.format(playingText, playing) + ChatColor.DARK_GRAY + String.format(availGamesText, availableGames));
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.setLore(lore);
         item.setItemMeta(meta);

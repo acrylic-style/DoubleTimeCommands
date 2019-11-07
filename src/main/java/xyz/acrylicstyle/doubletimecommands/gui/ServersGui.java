@@ -29,6 +29,7 @@ public class ServersGui implements InventoryHolder, Listener {
     private Collection<Integer, Server> servers = new Collection<>();
     private Collection<String, Server> itemNames = new Collection<>();
     private Collection<Integer, String> playing = new Collection<>();
+    private Collection<Integer, String> availableGames = new Collection<>();
     private final Plugin plugin;
 
     public ServersGui(Plugin plugin) {
@@ -54,26 +55,34 @@ public class ServersGui implements InventoryHolder, Listener {
             Server server = new Server(name, category, description, item, Objects.requireNonNull(gamePrefix));
             servers.add(i, server);
             itemNames.add(server.getName(), server);
-            this.inventory.setItem(i, server.toItemStack(ctc1, "0"));
+            this.inventory.setItem(i, server.toItemStack(ctc1, "0", "0"));
         }
         new BukkitRunnable() {
             public void run() {
                 cycle = !cycle;
-                servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, playing.getOrDefault(i, "0"))));
+                servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, playing.getOrDefault(i, "0"), availableGames.getOrDefault(i, "0"))));
             }
         }.runTaskTimer(this.plugin, 0, 10);
         new BukkitRunnable() {
             public void run() {
                 if (Bukkit.getOnlinePlayers().size() <= 0) return;
                 Player player = new CollectionList<Player>(Bukkit.getOnlinePlayers()).first();
-                servers.forEach((i, server) -> PluginMessageUtils.get(player, server.getGamePrefix(), player.getUniqueId() + "," + server.getGamePrefix(), "dtc:playing", new Callback<String>() {
-                    @Override
-                    public void done(String s, Throwable throwable) {
-                        playing.add(i, s);
-                    }
-                }));
+                servers.forEach((i, server) -> {
+                    PluginMessageUtils.get(player, server.getGamePrefix(), player.getUniqueId() + "," + server.getGamePrefix(), "dtc:playing", new Callback<String>() {
+                        @Override
+                        public void done(String s, Throwable throwable) {
+                            playing.add(i, s);
+                        }
+                    });
+                    PluginMessageUtils.get(player, server.getGamePrefix(), player.getUniqueId() + "," + server.getGamePrefix(), "dtc:availgames", new Callback<String>() {
+                        @Override
+                        public void done(String s, Throwable throwable) {
+                            availableGames.add(i, s);
+                        }
+                    });
+                });
             }
-        }.runTaskTimer(this.plugin, 0, 20*3);
+        }.runTaskTimer(this.plugin, 0, 20*5);
     }
 
     @Override
