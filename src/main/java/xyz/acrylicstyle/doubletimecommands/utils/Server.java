@@ -2,6 +2,7 @@ package xyz.acrylicstyle.doubletimecommands.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -41,6 +42,7 @@ public class Server {
         lore.add("");
         lore.add(ChatColor.GREEN + s);
         lore.add(ChatColor.GRAY + playing);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.setLore(lore);
         item.setItemMeta(meta);
         return item;
