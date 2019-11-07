@@ -35,13 +35,14 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static ConfigProvider bungee = null;
     public static File file = null;
     public static ConfigProvider config = null;
-    public static ServersGui serversGui = new ServersGui();
+    public static ServersGui serversGui;
     private String gameMenuText = ChatColor.GREEN + "Game Menu" + ChatColor.GRAY + " (Right Click)";
 
     public void onEnable() {
         Log.info(" > Loading config");
         try {
             config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
+            serversGui = new ServersGui(this);
         } catch (Exception ex) {
             Log.error("Error while loading configuration:");
             ex.printStackTrace();

@@ -8,10 +8,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import util.Collection;
 import util.CollectionList;
-import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.doubletimecommands.utils.Server;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
@@ -29,9 +29,11 @@ public class ServersGui implements InventoryHolder, Listener {
     private Collection<Integer, Server> servers = new Collection<>();
     private Collection<String, Server> itemNames = new Collection<>();
     private Collection<Integer, String> playing = new Collection<>();
+    private final Plugin plugin;
 
-    public ServersGui() {
+    public ServersGui(Plugin plugin) {
         this.inventory = Bukkit.createInventory(this, 9*6, "Game Menu");
+        this.plugin = plugin;
         initializeItems();
     }
 
@@ -41,7 +43,6 @@ public class ServersGui implements InventoryHolder, Listener {
             try {
                 name = config.getString("servers.slot" + i + ".name", null);
             } catch (Exception e) {
-                e.printStackTrace();
                 continue;
             }
             if (name == null) continue;
@@ -60,7 +61,7 @@ public class ServersGui implements InventoryHolder, Listener {
                 cycle = !cycle;
                 servers.forEach((i, server) -> ServersGui.this.inventory.setItem(i, server.toItemStack(cycle ? ctc1 : ctc2, String.format(playingText, playing.get(i)))));
             }
-        }.runTaskTimer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), 0, 500);
+        }.runTaskTimer(this.plugin, 0, 500);
         new BukkitRunnable() {
             public void run() {
                 if (Bukkit.getOnlinePlayers().size() <= 0) return;
@@ -71,7 +72,7 @@ public class ServersGui implements InventoryHolder, Listener {
                     }
                 }));
             }
-        }.runTaskTimer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), 0, 3000);
+        }.runTaskTimer(this.plugin, 0, 3000);
     }
 
     @Override
