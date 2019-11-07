@@ -42,10 +42,10 @@ public class PlayerUtils {
 		try {
 			//String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
 			//Ranks rank = Ranks.valueOf(rankString);
-			return getRank(player.getUniqueId()).getPrefix() + player.getName();
+			return getRank(player.getUniqueId()).getPrefix() + player.getCustomName();
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			return ChatColor.GRAY + player.getName();
+			return ChatColor.GRAY + player.getCustomName();
 		}
 	}
 
