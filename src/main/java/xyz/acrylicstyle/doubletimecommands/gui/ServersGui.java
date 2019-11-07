@@ -37,7 +37,13 @@ public class ServersGui implements InventoryHolder, Listener {
 
     private void initializeItems() {
         for (int i = 0; i < 9*6; i++) {
-            String name = config.getString("servers.slot" + i + ".name", null);
+            String name;
+            try {
+                name = config.getString("servers.slot" + i + ".name", null);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
             if (name == null) continue;
             String category = config.getString("servers.slot" + i + ".category", "???");
             String description = config.getString("servers.slot" + i + ".description", "");
