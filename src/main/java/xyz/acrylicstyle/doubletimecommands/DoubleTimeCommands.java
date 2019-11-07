@@ -122,6 +122,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
+        e.getPlayer().setCustomName(e.getPlayer().getName());
         if (config.getBoolean("maintenance", false)) {
             e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
         }

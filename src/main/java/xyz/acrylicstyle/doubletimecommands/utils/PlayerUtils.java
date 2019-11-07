@@ -50,7 +50,7 @@ public class PlayerUtils {
 	}
 
 	public static String getName(org.bukkit.entity.Player player, Ranks rank) {
-		return rank.getPrefix() + player.getName();
+		return rank.getPrefix() + player.getCustomName();
 	}
 
 	/**
