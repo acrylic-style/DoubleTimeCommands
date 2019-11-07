@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Server {
@@ -38,7 +39,8 @@ public class Server {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.DARK_GRAY + getCategory());
         lore.add("");
-        lore.add(ChatColor.GRAY + getDescription());
+        String[] lines = getDescription().split("\\\\n");
+        Arrays.asList(lines).forEach(str -> lore.add(ChatColor.GRAY + str));
         lore.add("");
         lore.add(ChatColor.GREEN + s);
         lore.add(ChatColor.GRAY + playing);
