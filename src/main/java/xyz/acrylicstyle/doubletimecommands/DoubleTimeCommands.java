@@ -100,7 +100,8 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         if (config.getBoolean("gameMenu", false)) {
-            if (Objects.requireNonNull(Objects.requireNonNull(e.getItem()).getItemMeta()).getDisplayName().equals(gameMenuText)) { // ?????
+            if (e.getItem() == null || e.getItem().getItemMeta() == null) return;
+            if (e.getItem().getItemMeta().getDisplayName().equals(gameMenuText)) { // ?????
                 e.getPlayer().openInventory(serversGui.getInventory());
             }
         }
