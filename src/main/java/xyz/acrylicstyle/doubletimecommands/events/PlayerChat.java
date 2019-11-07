@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.EventExecutor;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
+import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 public class PlayerChat implements EventExecutor {
 	@Override
@@ -13,6 +14,7 @@ public class PlayerChat implements EventExecutor {
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
 		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
 		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));
-		e.setFormat(ChatColor.translateAlternateColorCodes('&', e.getPlayer().getName() + "&r&f: " + e.getMessage()));
+		String message = PlayerUtils.getRank(e.getPlayer().getUniqueId()) == Ranks.DEFAULT ? ChatColor.GRAY + e.getMessage() : ChatColor.WHITE + e.getMessage();
+		e.setFormat(ChatColor.translateAlternateColorCodes('&', e.getPlayer().getName() + "&r&f: " + message));
 	}
 }

@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -136,7 +137,10 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                         if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
                             e.getPlayer().setAllowFlight(true);
                             e.getPlayer().setFlying(true);
-                            if (rank.ordinal() >= Ranks.SAND.ordinal()) Bukkit.broadcastMessage(name + ChatColor.AQUA + " joined the lobby!");
+                            if (rank.ordinal() >= Ranks.SAND.ordinal()) {
+                                if (rank == Ranks.MVPPP) for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(ChatColor.AQUA + " >" + ChatColor.RED + ">" + ChatColor.GREEN + "> " + name + ChatColor.GOLD + " joined the lobby! " + ChatColor.GREEN + "<" + ChatColor.RED + "<" + ChatColor.AQUA + "<");
+                                else for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(name + ChatColor.AQUA + " joined the lobby!");
+                            }
                         }
                         PlayerUtils.changeName(name, e.getPlayer());
                     }
