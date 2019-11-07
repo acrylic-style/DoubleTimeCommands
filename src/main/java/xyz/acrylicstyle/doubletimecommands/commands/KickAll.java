@@ -15,7 +15,7 @@ public class KickAll implements CommandExecutor {
 			for (String arg : args) reason += arg + " ";
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (!(sender instanceof Player)) if (player.getUniqueId() == ((Player) sender).getUniqueId()) continue;
+			if (sender instanceof Player) if (player.getUniqueId() == ((Player) sender).getUniqueId()) continue;
 			player.kickPlayer(ChatColor.RED + "You have kicked from server with reason: " + reason);
 		}
 		sender.sendMessage(ChatColor.GREEN + "You've kicked all players with reason: " + reason);

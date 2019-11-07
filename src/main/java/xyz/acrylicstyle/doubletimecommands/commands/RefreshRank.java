@@ -17,7 +17,7 @@ public class RefreshRank implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "This command should send from in-game.");
+            sender.sendMessage(ChatColor.RED + "This command must run from in-game.");
             return true;
         }
         final AtomicReference<Player> player = new AtomicReference<>();

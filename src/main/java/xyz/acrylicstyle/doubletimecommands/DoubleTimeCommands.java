@@ -15,6 +15,7 @@ import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerMove;
+import xyz.acrylicstyle.doubletimecommands.gui.ServersGui;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
@@ -29,6 +30,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static ConfigProvider bungee = null;
     public static File file = null;
     public static ConfigProvider config = null;
+    public static ServersGui serversGui = new ServersGui();
 
     public void onEnable() {
         Log.info(" > Loading config");
@@ -83,6 +85,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("kickall")).setExecutor(new KickAll());
         Objects.requireNonNull(Bukkit.getPluginCommand("refreshrank")).setExecutor(new RefreshRank());
         Objects.requireNonNull(Bukkit.getPluginCommand("transfer")).setExecutor(new Transfer());
+        Objects.requireNonNull(Bukkit.getPluginCommand("servers")).setExecutor(new Servers());
         Log.info(" > Enabled DoubleTimeCommands");
     }
 

@@ -46,3 +46,6 @@ commands:
   transfer:
     description: "Transfer player to the specific game."
     usage: /<command> <game>
+  servers:
+    description: "Shows server list"
+    usage: /<command>
