@@ -40,7 +40,7 @@ public class Server {
         lore.add(ChatColor.DARK_GRAY + getCategory());
         lore.add("");
         String[] lines = getDescription().split("\\\\n");
-        Arrays.asList(lines).forEach(str -> lore.add(ChatColor.GRAY + str));
+        Arrays.asList(lines).forEach(str -> lore.add(ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', str)));
         lore.add("");
         if (!playing.equals("-1")) lore.add(ChatColor.GREEN + s);
         char heavy_multiplication_x = '\u2716';
