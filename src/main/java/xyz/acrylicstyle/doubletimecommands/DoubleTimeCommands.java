@@ -153,9 +153,9 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                                 if (rank == Ranks.MVPPP) for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(ChatColor.AQUA + " >" + ChatColor.RED + ">" + ChatColor.GREEN + "> " + name + ChatColor.GOLD + " joined the lobby! " + ChatColor.GREEN + "<" + ChatColor.RED + "<" + ChatColor.AQUA + "<");
                                 else for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(name + ChatColor.GOLD + " joined the lobby!");
                             }
-                            if (rank.ordinal() <= Ranks.ADMIN.ordinal()) e.getPlayer().setOp(true);
+                            if (rank.ordinal() <= Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(true);
                         }
-                        if (rank.ordinal() > Ranks.ADMIN.ordinal()) e.getPlayer().setOp(false);
+                        if (rank.ordinal() > Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(false);
                         PlayerUtils.changeName(name, e.getPlayer());
                     }
                 });

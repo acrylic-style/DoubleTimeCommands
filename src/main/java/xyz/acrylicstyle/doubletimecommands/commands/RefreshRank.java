@@ -33,9 +33,9 @@ public class RefreshRank implements CommandExecutor {
                     if (DoubleTimeCommands.config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, player.get().getUniqueId())) {
                         player.get().setAllowFlight(true);
                         player.get().setFlying(true);
-                        if (after.ordinal() <= Ranks.ADMIN.ordinal()) player.get().setOp(true);
+                        if (after.ordinal() <= Ranks.MODERATOR.ordinal()) player.get().setOp(true);
                     }
-                    if (after.ordinal() > Ranks.ADMIN.ordinal()) player.get().setOp(false);
+                    if (after.ordinal() > Ranks.MODERATOR.ordinal()) player.get().setOp(false);
                     PlayerUtils.changeName(name, player.get());
                     if (before.equals(after)) {
                         player.get().sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
