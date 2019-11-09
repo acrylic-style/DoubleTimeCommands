@@ -36,7 +36,6 @@ public class RefreshRank implements CommandExecutor {
                         if (after.ordinal() <= Ranks.MODERATOR.ordinal()) player.get().setOp(true);
                     }
                     if (after.ordinal() > Ranks.MODERATOR.ordinal()) player.get().setOp(false);
-                    PlayerUtils.changeName(name, player.get());
                     if (before.equals(after)) {
                         player.get().sendMessage(ChatColor.GREEN + "Refreshed rank, but you're still " + before.name() + " because we couldn't find any changes.");
                         return;

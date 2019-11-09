@@ -1,7 +1,6 @@
 package xyz.acrylicstyle.doubletimecommands.utils;
 
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import util.CollectionStrictSync;
@@ -12,10 +11,6 @@ import xyz.acrylicstyle.tomeito_core.utils.Log;
 import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -65,48 +60,6 @@ public class PlayerUtils {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return ChatColor.GRAY + player.getName();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static void changeName(String name, org.bukkit.entity.Player player) {
-		try {
-			Method getHandle = player.getClass().getMethod("getHandle");
-			Object entityPlayer = getHandle.invoke(player);
-			boolean gameProfileExists = false;
-			try {
-				Class.forName("net.minecraft.util.com.mojang.authlib.GameProfile");
-				gameProfileExists = true;
-			} catch (ClassNotFoundException ignored) { }
-			try {
-				Class.forName("com.mojang.authlib.GameProfile");
-				gameProfileExists = true;
-			} catch (ClassNotFoundException ignored) {}
-			if (!gameProfileExists) { // 1.6 or below
-				Field nameField = entityPlayer.getClass().getSuperclass().getDeclaredField("name");
-				nameField.setAccessible(true);
-				nameField.set(entityPlayer, name);
-			} else { // 1.7+
-				Object profile = entityPlayer.getClass().getMethod("getProfile").invoke(entityPlayer);
-				Field ff = profile.getClass().getDeclaredField("name");
-				ff.setAccessible(true);
-				ff.set(profile, name);
-			}
-			if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-				Collection<? extends org.bukkit.entity.Player> players = (Collection<? extends org.bukkit.entity.Player>) Bukkit.class.getMethod("getOnlinePlayers").invoke(null);
-				for (org.bukkit.entity.Player p : players) {
-					p.hidePlayer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), player);
-					p.showPlayer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), player);
-				}
-			} else {
-				org.bukkit.entity.Player[] players = ((org.bukkit.entity.Player[]) Bukkit.class.getMethod("getOnlinePlayers").invoke(null));
-				for (org.bukkit.entity.Player p : players) {
-					p.hidePlayer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), player);
-					p.showPlayer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), player);
-				}
-			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
-				e.printStackTrace();
 		}
 	}
 

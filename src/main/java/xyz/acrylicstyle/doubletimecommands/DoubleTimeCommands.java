@@ -156,7 +156,6 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                             if (rank.ordinal() <= Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(true);
                         }
                         if (rank.ordinal() > Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(false);
-                        PlayerUtils.changeName(name, e.getPlayer());
                     }
                 });
             }
