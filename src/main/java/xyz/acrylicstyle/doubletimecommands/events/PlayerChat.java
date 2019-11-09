@@ -15,6 +15,6 @@ public class PlayerChat implements EventExecutor {
 		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
 		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));
 		String message = PlayerUtils.getRank(e.getPlayer().getUniqueId()) == Ranks.DEFAULT ? ChatColor.GRAY + e.getMessage() : ChatColor.WHITE + e.getMessage();
-		e.setFormat(ChatColor.translateAlternateColorCodes('&', e.getPlayer().getName() + "&r&f: " + message));
+		e.setFormat(ChatColor.translateAlternateColorCodes('&', PlayerUtils.getName(e.getPlayer()) + "&r&f: " + message));
 	}
 }
