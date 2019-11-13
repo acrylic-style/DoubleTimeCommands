@@ -126,7 +126,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         if (config.getBoolean("maintenance", false)) {
             e.getPlayer().sendMessage(ChatColor.GOLD + "Server is currently in maintenance mode!");
         }
-        e.getPlayer().getInventory().clear();
+        if (config.getBoolean("lobby", false)) e.getPlayer().getInventory().clear();
         if (config.getBoolean("gameMenu", false)) {
             ItemStack gameMenu = new ItemStack(Material.COMPASS);
             ItemMeta meta = gameMenu.getItemMeta();
