@@ -86,10 +86,6 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         if (config.getBoolean("voidless", false)) Bukkit.getPluginManager().registerEvent(PlayerMoveEvent.class, this, EventPriority.NORMAL, new PlayerMove(), this);
         Log.info(" > Registering commands");
         Objects.requireNonNull(Bukkit.getPluginCommand("setspawnonjoin")).setExecutor(new SetSpawnOnJoin());
-        Objects.requireNonNull(Bukkit.getPluginCommand("nick")).setExecutor(new SetNickname());
-        Objects.requireNonNull(Bukkit.getPluginCommand("prefix")).setExecutor(new SetPrefix());
-        Objects.requireNonNull(Bukkit.getPluginCommand("resetnick")).setExecutor(new ResetNickname());
-        Objects.requireNonNull(Bukkit.getPluginCommand("resetprefix")).setExecutor(new ResetPrefix());
         Objects.requireNonNull(Bukkit.getPluginCommand("setgamemodeonjoin")).setExecutor(new SetGamemodeOnJoin());
         Objects.requireNonNull(Bukkit.getPluginCommand("maintenance")).setExecutor(new Maintenance());
         Objects.requireNonNull(Bukkit.getPluginCommand("kickall")).setExecutor(new KickAll());

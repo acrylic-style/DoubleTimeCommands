@@ -12,26 +12,6 @@ commands:
     description: "Set if set gamemode on join, survival, creative, adventure or spectator."
     usage: /<command> <adventure/creative/survival/spectator/null>
     permission: doubletimecommands.commands.setgamemodeonjoin
-  nick:
-    description: "Sets nickname."
-    aliases: ["nickname","setnick","setnickname"]
-    usage: /<command> <new nick> [player]
-    permission: doubletimecommands.commands.nick
-  prefix:
-    description: "Sets prefix."
-    aliases: ["setprefix"]
-    usage: /<command> <new prefix> [player]
-    permission: doubletimecommands.commands.prefix
-  resetnick:
-    description: "Reset nickname."
-    aliases: ["deletenick", "unnick"]
-    usage: /<command> [player]
-    permission: doubletimecommands.commands.unnick
-  resetprefix:
-    description: "Reset prefix."
-    aliases: ["deleteprefix", "unprefix"]
-    usage: /<command> [player]
-    permission: doubletimecommands.commands.resetprefix
   maintenance:
     description: "Toggles maintenance mode"
     usage: /<command>
