@@ -11,6 +11,7 @@ import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
 
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +58,7 @@ public final class Utils {
             getPoints(Bukkit.getPlayer(player), new Callback<Long>() {
                 @Override
                 public void done(Long l, Throwable throwable) {
-                    String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%points%", Long.toString(l)));
+                    String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%points%", NumberFormat.getInstance().format(l)));
                     setScore(score, text2, obj, player);
                 }
             });
@@ -65,7 +66,7 @@ public final class Utils {
             getExperience(Bukkit.getPlayer(player), new Callback<Long>() {
                 @Override
                 public void done(Long l, Throwable throwable) {
-                    String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%experience%", Long.toString(l)));
+                    String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%experience%", NumberFormat.getInstance().format(l)));
                     setScore(score, text2, obj, player);
                     Objects.requireNonNull(Bukkit.getPlayer(player)).setExp(l);
                 }
