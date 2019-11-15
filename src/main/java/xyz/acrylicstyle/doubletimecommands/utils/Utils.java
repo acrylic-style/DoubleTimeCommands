@@ -50,7 +50,7 @@ public final class Utils {
                     placeHolder(i, s, objective, player);
                 });
             }
-        }.runTaskTimer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), 0, 5*20);
+        }.runTaskTimer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), 20, 5*20);
     }
 
     private static void placeHolder(final int score, final String text, final Objective obj, final UUID player) {
@@ -79,6 +79,8 @@ public final class Utils {
                     setScore(score, text2, obj, player);
                 }
             });
+        } else if (text.contains("%rank%")) {
+            setScore(score, ChatColor.translateAlternateColorCodes('&', text.replaceAll("%rank%", PlayerUtils.getRank(player).defaultColor + PlayerUtils.getRank(player).getName())), obj, player);
         } else setScore(score, ChatColor.translateAlternateColorCodes('&', text), obj, player);
     }
 
