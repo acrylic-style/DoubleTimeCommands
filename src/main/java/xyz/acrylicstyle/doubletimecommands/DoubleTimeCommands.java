@@ -203,7 +203,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) return;
         Player victim = (Player) e.getEntity();
         Player damager = (Player) e.getDamager();
-        if (Ranks.VIP.ordinal() < PlayerUtils.getRank(damager.getUniqueId()).ordinal() && Ranks.HELPER.ordinal() < PlayerUtils.getRank(victim.getUniqueId()).ordinal()) {
+        if (Ranks.VIP.ordinal() >= PlayerUtils.getRank(damager.getUniqueId()).ordinal() && Ranks.HELPER.ordinal() >= PlayerUtils.getRank(victim.getUniqueId()).ordinal()) {
             if (punches.contains(victim.getUniqueId())) {
                 damager.sendMessage(ChatColor.RED + "This person has been punched too frequently in the past 30 seconds!");
             } else {
