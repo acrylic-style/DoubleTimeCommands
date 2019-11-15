@@ -3,6 +3,7 @@ package xyz.acrylicstyle.doubletimecommands.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import util.Collection;
 import util.CollectionList;
@@ -38,9 +39,17 @@ public final class Utils {
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
         List<String> list = DoubleTimeCommands.config.getStringList("scoreboard.list");
         Collections.reverse(list);
-        new CollectionList<>(list).foreach((s, i) -> {
-            placeHolder(i, s, objective, player);
-        });
+        new BukkitRunnable() {
+            public void run() {
+                if (Bukkit.getPlayer(player) == null) {
+                    this.cancel();
+                    return;
+                }
+                new CollectionList<>(list).foreach((s, i) -> {
+                    placeHolder(i, s, objective, player);
+                });
+            }
+        }.runTaskTimer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), 0, 5*20);
     }
 
     private static void placeHolder(final int score, final String text, final Objective obj, final UUID player) {
