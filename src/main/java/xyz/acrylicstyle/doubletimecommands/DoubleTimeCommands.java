@@ -197,7 +197,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
     private CollectionList<UUID> punches = new CollectionList<>();
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         Log.info("fired");
         e.setCancelled(true);
