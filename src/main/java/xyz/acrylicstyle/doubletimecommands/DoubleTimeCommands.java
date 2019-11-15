@@ -9,12 +9,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import util.CollectionList;
 import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static ConfigProvider bungee = null;
@@ -189,6 +192,30 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         } catch (IOException | InvalidConfigurationException e1) {
             Log.error("Exception while processing login of " + e.getPlayer().getUniqueId());
             e1.printStackTrace();
+        }
+    }
+
+    private CollectionList<UUID> punches = new CollectionList<>();
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        e.setCancelled(true);
+        if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) return;
+        Player victim = (Player) e.getEntity();
+        Player damager = (Player) e.getDamager();
+        if (Ranks.VIP.ordinal() < PlayerUtils.getRank(damager.getUniqueId()).ordinal() && Ranks.HELPER.ordinal() < PlayerUtils.getRank(victim.getUniqueId()).ordinal()) {
+            if (punches.contains(victim.getUniqueId())) {
+                damager.sendMessage(ChatColor.RED + "This person has been punched too frequently in the past 30 seconds!");
+            } else {
+                Bukkit.broadcastMessage(PlayerUtils.getName(damager) + ChatColor.GRAY + " punched " + PlayerUtils.getName(victim) + ChatColor.GRAY + " into the sky!");
+                victim.setVelocity(victim.getLocation().add(0, 10, 0).toVector());
+                punches.put(victim.getUniqueId());
+                new BukkitRunnable() {
+                    public void run() {
+                        punches.remove(victim.getUniqueId());
+                    }
+                }.runTaskLater(this, 30*20);
+            }
         }
     }
 }
