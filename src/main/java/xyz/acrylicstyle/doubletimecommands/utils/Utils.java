@@ -29,13 +29,13 @@ public final class Utils {
 
     public static void morningCall(final UUID player) {
         Scoreboard board = manager.getNewScoreboard();
-        Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
         final Objective objective = board.registerNewObjective("scoreboard",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
                 RenderType.INTEGER);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         scoreboards.put(player, board);
+        Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
         List<String> list = DoubleTimeCommands.config.getStringList("scoreboard.list");
         Collections.reverse(list);
         new CollectionList<>(list).foreach((s, i) -> {
@@ -57,6 +57,14 @@ public final class Utils {
                 @Override
                 public void done(Long l, Throwable throwable) {
                     String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%experience%", Long.toString(l)));
+                    setScore(score, text2, obj, player);
+                }
+            });
+        } else if (text.contains("%players%")) {
+            PluginMessageUtils.get(Bukkit.getPlayer(player), "", player + ",,,,", "dtc:playing", new Callback<String>() {
+                @Override
+                public void done(String s, Throwable throwable) {
+                    String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%players%", s));
                     setScore(score, text2, obj, player);
                 }
             });
