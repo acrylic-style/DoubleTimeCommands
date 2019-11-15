@@ -31,7 +31,7 @@ public final class Utils {
 
     public static void morningCall(final UUID player) {
         Scoreboard board = manager.getNewScoreboard();
-        final Objective objective = board.registerNewObjective("scoreboard",
+        final Objective objective = board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
                 RenderType.INTEGER);
