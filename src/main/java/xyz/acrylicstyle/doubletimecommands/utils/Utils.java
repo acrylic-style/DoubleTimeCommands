@@ -67,6 +67,7 @@ public final class Utils {
                 public void done(Long l, Throwable throwable) {
                     String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%experience%", Long.toString(l)));
                     setScore(score, text2, obj, player);
+                    Objects.requireNonNull(Bukkit.getPlayer(player)).setExp(l);
                 }
             });
         } else if (text.contains("%players%")) {
