@@ -1,9 +1,6 @@
 package xyz.acrylicstyle.doubletimecommands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import util.CollectionList;
 import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
@@ -199,19 +197,18 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        Log.info("fired");
         e.setCancelled(true);
         if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player) || !config.getBoolean("lobby", false)) return;
         Player victim = (Player) e.getEntity();
         Player damager = (Player) e.getDamager();
-        Log.info("Damager's rank: " + PlayerUtils.getRank(damager.getUniqueId()).ordinal() + ", victim's rank: " + PlayerUtils.getRank(victim.getUniqueId()).ordinal());
-        Log.info("VIP: " + Ranks.VIP.ordinal() + ", HELPER: " + Ranks.HELPER.ordinal());
         if (Ranks.VIP.ordinal() >= PlayerUtils.getRank(damager.getUniqueId()).ordinal() && Ranks.HELPER.ordinal() >= PlayerUtils.getRank(victim.getUniqueId()).ordinal()) {
             if (punches.contains(victim.getUniqueId())) {
                 damager.sendMessage(ChatColor.RED + "This person has been punched too frequently in the past 30 seconds!");
             } else {
                 Bukkit.broadcastMessage(PlayerUtils.getName(damager) + ChatColor.GRAY + " punched " + PlayerUtils.getName(victim) + ChatColor.GRAY + " into the sky!");
-                victim.setVelocity(victim.getLocation().add(0, 10, 0).toVector());
+                e.getDamager().getWorld().playSound(victim.getLocation(), Sound.ENTITY_TNT_PRIMED, 1, 1);
+                e.getDamager().getWorld().spawnParticle(Particle.EXPLOSION_LARGE, victim.getLocation(), 5);
+                victim.setVelocity(new Vector(0, 30, 0));
                 punches.put(victim.getUniqueId());
                 new BukkitRunnable() {
                     public void run() {
