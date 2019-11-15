@@ -62,7 +62,7 @@ public final class Utils {
                 }
             });
         } else if (text.contains("%experience%")) {
-            getPoints(Bukkit.getPlayer(player), new Callback<Long>() {
+            getExperience(Bukkit.getPlayer(player), new Callback<Long>() {
                 @Override
                 public void done(Long l, Throwable throwable) {
                     String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%experience%", Long.toString(l)));
@@ -80,8 +80,7 @@ public final class Utils {
         } else setScore(score, ChatColor.translateAlternateColorCodes('&', text), obj, player);
     }
 
-    public static void setScore(Integer score, String s, Objective objective, UUID uuid) {
-        final String text = s + "        ";
+    public static void setScore(Integer score, String text, Objective objective, UUID uuid) {
         if (score == null) {
             Objects.requireNonNull(objective.getScoreboard()).resetScores(text);
             return;
