@@ -21,6 +21,7 @@ import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerMove;
 import xyz.acrylicstyle.doubletimecommands.gui.ServersGui;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
+import xyz.acrylicstyle.doubletimecommands.utils.Utils;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
@@ -119,6 +120,11 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        if (config.getBoolean("lobby", false)) Utils.removeScores(e.getPlayer().getUniqueId());
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
@@ -168,6 +174,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
                 (!e.getPlayer().performCommand("spawn"))) {
             e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
         }
+        if (config.getBoolean("lobby", false)) Utils.morningCall(e.getPlayer().getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
