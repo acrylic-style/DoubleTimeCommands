@@ -201,12 +201,12 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player) || !config.getBoolean("lobby", false)) return;
         Player victim = (Player) e.getEntity();
         Player damager = (Player) e.getDamager();
-        if (Ranks.VIP.ordinal() >= PlayerUtils.getRank(damager.getUniqueId()).ordinal() && Ranks.HELPER.ordinal() >= PlayerUtils.getRank(victim.getUniqueId()).ordinal()) {
+        if ((Ranks.VIP.ordinal() >= PlayerUtils.getRank(damager.getUniqueId()).ordinal() && Ranks.HELPER.ordinal() >= PlayerUtils.getRank(victim.getUniqueId()).ordinal()) || Ranks.ADMIN.ordinal() >= PlayerUtils.getRank(damager.getUniqueId()).ordinal()) {
             if (punches.contains(victim.getUniqueId())) {
                 damager.sendMessage(ChatColor.RED + "This person has been punched too frequently in the past 30 seconds!");
             } else {
                 Bukkit.broadcastMessage(PlayerUtils.getName(damager) + ChatColor.GRAY + " punched " + PlayerUtils.getName(victim) + ChatColor.GRAY + " into the sky!");
-                e.getDamager().getWorld().playSound(victim.getLocation(), Sound.ENTITY_TNT_PRIMED, 1, 1);
+                e.getDamager().getWorld().playSound(victim.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
                 e.getDamager().getWorld().spawnParticle(Particle.EXPLOSION_LARGE, victim.getLocation(), 5);
                 victim.setVelocity(new Vector(0, 30, 0));
                 punches.put(victim.getUniqueId());
