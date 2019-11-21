@@ -20,23 +20,15 @@ import java.util.UUID;
 public final class Utils {
     private Utils() {}
 
-    private static ScoreboardManager manager;
-
-    static {
-        manager = Bukkit.getScoreboardManager();
-    }
-
-    private static Collection<UUID, Scoreboard> scoreboards = new Collection<>();
     private static Collection<UUID, Collection<Integer, String>> scores = new Collection<>();
 
     public static void morningCall(final UUID player) {
-        Scoreboard board = manager.getNewScoreboard();
+        Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
         final Objective objective = board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
                 RenderType.INTEGER);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        scoreboards.put(player, board);
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
         List<String> list = DoubleTimeCommands.config.getStringList("scoreboard.list");
         Collections.reverse(list);
