@@ -167,6 +167,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         if (gamemode != null) {
             e.getPlayer().setGameMode(GameMode.valueOf(gamemode));
         }
+        e.getPlayer().sendTitle("", "", 0, 0, 0);
         if ((config.getBoolean("spawnOnJoin", false)) &&
                 (!e.getPlayer().performCommand("spawn"))) {
             e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());

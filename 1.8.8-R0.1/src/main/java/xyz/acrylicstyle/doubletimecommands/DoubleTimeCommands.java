@@ -123,6 +123,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
+    @SuppressWarnings("deprecation")
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
         e.getPlayer().setCustomName(e.getPlayer().getName());
@@ -167,6 +168,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         if (gamemode != null) {
             e.getPlayer().setGameMode(GameMode.valueOf(gamemode));
         }
+        e.getPlayer().sendTitle("", "");
         if ((config.getBoolean("spawnOnJoin", false)) &&
                 (!e.getPlayer().performCommand("spawn"))) {
             e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
