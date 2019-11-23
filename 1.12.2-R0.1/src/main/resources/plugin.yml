@@ -1,0 +1,36 @@
+name: DoubleTimeCommands
+main: xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands
+version: 0.0.1
+depend: [TomeitoLib]
+
+commands:
+  setspawnonjoin:
+    description: "Sets if spawn on join, true or false."
+    usage: /<command> [true/false]
+    permission: doubletimecommands.commands.setspawnonjoin
+  setgamemodeonjoin:
+    description: "Set if set gamemode on join, survival, creative, adventure or spectator."
+    usage: /<command> <adventure/creative/survival/spectator/null>
+    permission: doubletimecommands.commands.setgamemodeonjoin
+  maintenance:
+    description: "Toggles maintenance mode"
+    usage: /<command>
+    permission: doubletimecommands.commands.maintenance
+  kickall:
+    description: "What a guy!"
+    usage: /<command> [reason]
+    permissions: doubletimecommands.commands.kickall
+  refreshrank:
+    description: "Refreshes your rank."
+    usage: /<command>
+  transfer:
+    description: "Transfer player to the specific game."
+    usage: /<command> <game>
+  servers:
+    description: "Shows server list"
+    usage: /<command>
+  spawn:
+    description: "Teleports you to the world spawn point"
+    usage: /<command>
+    aliases:
+      - "stuck"

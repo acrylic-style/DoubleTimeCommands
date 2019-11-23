@@ -42,5 +42,6 @@
     <modules>
         <module>1.14.4-R0.1</module>
         <module>1.8.8-R0.1</module>
+        <module>1.12.2-R0.1</module>
     </modules>
 </project>
