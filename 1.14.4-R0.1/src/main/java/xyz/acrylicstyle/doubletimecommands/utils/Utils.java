@@ -91,7 +91,7 @@ public final class Utils {
         Collection<Integer, String> collection = scores.get(uuid);
         collection.put(score, text);
         scores.put(uuid, collection);
-        if (Bukkit.getPlayer(uuid) != null) Bukkit.getPlayer(uuid).setScoreboard(Objects.requireNonNull(objective.getScoreboard())); // no it wont produce npe
+        if (Bukkit.getPlayer(uuid) != null) Bukkit.getPlayer(uuid).setScoreboard(Objects.requireNonNull(objective.getScoreboard())); // no it wont produce npe for sure
     }
 
     public static void getPoints(Player player, Callback<Long> callback) {

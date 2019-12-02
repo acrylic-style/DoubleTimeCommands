@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import util.CollectionList;
+import util.DataSerializer;
 import xyz.acrylicstyle.doubletimecommands.commands.*;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerChat;
 import xyz.acrylicstyle.doubletimecommands.events.PlayerCommandPreprocess;
@@ -145,20 +146,25 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
             public void run() {
                 PlayerUtils.refreshRank(e.getPlayer(), new Callback<Ranks>() {
                     @Override
-                    public void done(Ranks rank, Throwable ex) { // lets run twice?
-                        String name = PlayerUtils.getName(e.getPlayer(), rank);
-                        e.getPlayer().setDisplayName(name);
-                        e.getPlayer().setPlayerListName(name);
-                        if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
-                            e.getPlayer().setAllowFlight(true);
-                            e.getPlayer().setFlying(true);
-                            if (rank.ordinal() <= Ranks.SAND.ordinal()) {
-                                if (rank == Ranks.MVPPP) for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(ChatColor.AQUA + " >" + ChatColor.RED + ">" + ChatColor.GREEN + "> " + name + ChatColor.GOLD + " joined the lobby! " + ChatColor.GREEN + "<" + ChatColor.RED + "<" + ChatColor.AQUA + "<");
-                                else for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(name + ChatColor.GOLD + " joined the lobby!");
+                    public void done(Ranks rank, Throwable ex) {
+                        PlayerUtils.getPlayerData(e.getPlayer(), new Callback<DataSerializer>() {
+                            @Override
+                            public void done(DataSerializer dataSerializer, Throwable ex2) {
+                                String name = PlayerUtils.getName(e.getPlayer(), rank);
+                                e.getPlayer().setDisplayName(name);
+                                e.getPlayer().setPlayerListName(name);
+                                if (config.getBoolean("flyable_vip", false) && PlayerUtils.must(Ranks.SAND, e.getPlayer().getUniqueId())) {
+                                    e.getPlayer().setAllowFlight(true);
+                                    e.getPlayer().setFlying(true);
+                                    if (rank.ordinal() <= Ranks.SAND.ordinal()) {
+                                        if (rank == Ranks.MVPPP) for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(ChatColor.AQUA + " >" + ChatColor.RED + ">" + ChatColor.GREEN + "> " + name + ChatColor.GOLD + " joined the lobby! " + ChatColor.GREEN + "<" + ChatColor.RED + "<" + ChatColor.AQUA + "<");
+                                        else for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(name + ChatColor.GOLD + " joined the lobby!");
+                                    }
+                                    if (rank.ordinal() <= Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(true);
+                                }
+                                if (rank.ordinal() > Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(false);
                             }
-                            if (rank.ordinal() <= Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(true);
-                        }
-                        if (rank.ordinal() > Ranks.MODERATOR.ordinal()) e.getPlayer().setOp(false);
+                        });
                     }
                 });
             }
