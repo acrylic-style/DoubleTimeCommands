@@ -55,7 +55,7 @@ public class PlayerUtils {
             public void done(String s, Throwable e) {
                 try {
                     DataSerializer dataSerializer = DataSerializer.fromString(s);
-                    customPrefixes.put(player.getUniqueId(), dataSerializer.get("customPrefix") + " ");
+                    if (dataSerializer.get("customPrefix") != null) customPrefixes.put(player.getUniqueId(), dataSerializer.get("customPrefix") + " ");
                     callback.done(dataSerializer, null);
                 } catch (IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();
