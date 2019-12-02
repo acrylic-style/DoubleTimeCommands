@@ -34,7 +34,6 @@ public class Server {
         ItemStack item = new ItemStack(getItem());
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        meta.spigot().setUnbreakable(true);
         meta.setDisplayName(getName());
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.DARK_GRAY + getCategory());

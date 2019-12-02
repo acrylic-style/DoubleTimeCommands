@@ -92,8 +92,8 @@ public class ServersGui implements InventoryHolder, Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getHolder() != this || e.getCurrentItem() == null) return;
+        if (e.getInventory() == null) return;
+        if (e.getInventory().getHolder() != this || e.getCurrentItem() == null) return;
         e.setCancelled(true);
         e.getWhoClicked().closeInventory();
         String name = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName();
