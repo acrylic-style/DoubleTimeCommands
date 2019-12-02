@@ -43,59 +43,64 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     private String gameMenuText = ChatColor.GREEN + "Game Menu" + ChatColor.GRAY + " (Right Click)";
 
     public void onEnable() {
-        Log.info(" > Loading config");
-        try {
-            config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
-            serversGui = new ServersGui(this);
-        } catch (Exception ex) {
-            Log.error("Error while loading configuration:");
-            ex.printStackTrace();
-            ex.getCause().printStackTrace();
-            return;
-        }
-        Log.info(" > Registering events");
-        Bukkit.getPluginManager().registerEvents(this, this);
-        String apcePriority; // apce = AsyncPlayerChatEvent
-        String pcppPriority = null; // pcpp = PlayerCommandPreProcessEvent
-        try {
-            apcePriority = ConfigProvider.getString("priority.AsyncPlayerChatEvent", "HIGHEST", "DoubleTimeCommands");
-        } catch (IOException | InvalidConfigurationException e) {
-            Log.error("An error occurred while fetching event priority of AsyncPlayerChatEvent:");
-            e.printStackTrace();
-            apcePriority = "HIGHEST";
-        }
-        try {
-            pcppPriority = ConfigProvider.getString("priority.PlayerCommandPreprocessEvent", "HIGHEST", "DoubleTimeCommands");
-        } catch (IOException | InvalidConfigurationException e) {
-            Log.error("An error occurred while fetching event priority of PlayerCommandPreprocess:");
-            e.printStackTrace();
-            apcePriority = "HIGHEST";
-        }
-        try {
-            String configPath = ConfigProvider.getString("bungeeConfig", null, "DoubleTimeCommands");
-            if (configPath != null) {
-                File config = new File(configPath);
-                file = config;
-                if (config.exists()) bungee = new ConfigProvider(config.getAbsolutePath());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Log.info(" > Loading config");
+                try {
+                    config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
+                    serversGui = new ServersGui(DoubleTimeCommands.this);
+                } catch (Exception ex) {
+                    Log.error("Error while loading configuration:");
+                    ex.printStackTrace();
+                    ex.getCause().printStackTrace();
+                    return;
+                }
+                Log.info(" > Registering events");
+                Bukkit.getPluginManager().registerEvents(DoubleTimeCommands.this, DoubleTimeCommands.this);
+                String apcePriority; // apce = AsyncPlayerChatEvent
+                String pcppPriority = null; // pcpp = PlayerCommandPreProcessEvent
+                try {
+                    apcePriority = ConfigProvider.getString("priority.AsyncPlayerChatEvent", "HIGHEST", "DoubleTimeCommands");
+                } catch (IOException | InvalidConfigurationException e) {
+                    Log.error("An error occurred while fetching event priority of AsyncPlayerChatEvent:");
+                    e.printStackTrace();
+                    apcePriority = "HIGHEST";
+                }
+                try {
+                    pcppPriority = ConfigProvider.getString("priority.PlayerCommandPreprocessEvent", "HIGHEST", "DoubleTimeCommands");
+                } catch (IOException | InvalidConfigurationException e) {
+                    Log.error("An error occurred while fetching event priority of PlayerCommandPreprocess:");
+                    e.printStackTrace();
+                    apcePriority = "HIGHEST";
+                }
+                try {
+                    String configPath = ConfigProvider.getString("bungeeConfig", null, "DoubleTimeCommands");
+                    if (configPath != null) {
+                        File config = new File(configPath);
+                        file = config;
+                        if (config.exists()) bungee = new ConfigProvider(config.getAbsolutePath());
+                    }
+                } catch (IOException | InvalidConfigurationException e) {
+                    Log.error("An error occurred while fetching BungeeCord config from config.yml:");
+                    e.printStackTrace();
+                }
+                Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, DoubleTimeCommands.this, EventPriority.valueOf(apcePriority), new PlayerChat(), DoubleTimeCommands.this);
+                Bukkit.getPluginManager().registerEvent(PlayerCommandPreprocessEvent.class, DoubleTimeCommands.this, EventPriority.valueOf(pcppPriority), new PlayerCommandPreprocess(), DoubleTimeCommands.this);
+                Bukkit.getPluginManager().registerEvents(serversGui, DoubleTimeCommands.this);
+                if (config.getBoolean("voidless", false)) Bukkit.getPluginManager().registerEvent(PlayerMoveEvent.class, DoubleTimeCommands.this, EventPriority.NORMAL, new PlayerMove(), DoubleTimeCommands.this);
+                Log.info(" > Registering commands");
+                Objects.requireNonNull(Bukkit.getPluginCommand("setspawnonjoin")).setExecutor(new SetSpawnOnJoin());
+                Objects.requireNonNull(Bukkit.getPluginCommand("setgamemodeonjoin")).setExecutor(new SetGamemodeOnJoin());
+                Objects.requireNonNull(Bukkit.getPluginCommand("maintenance")).setExecutor(new Maintenance());
+                Objects.requireNonNull(Bukkit.getPluginCommand("kickall")).setExecutor(new KickAll());
+                Objects.requireNonNull(Bukkit.getPluginCommand("refreshrank")).setExecutor(new RefreshRank());
+                Objects.requireNonNull(Bukkit.getPluginCommand("transfer")).setExecutor(new Transfer());
+                if (config.getBoolean("lobby", false)) Objects.requireNonNull(Bukkit.getPluginCommand("servers")).setExecutor(new Servers());
+                if (config.getBoolean("lobby", false)) Objects.requireNonNull(Bukkit.getPluginCommand("spawn")).setExecutor(new Spawn());
+                Log.info(" > Enabled DoubleTimeCommands");
             }
-        } catch (IOException | InvalidConfigurationException e) {
-            Log.error("An error occurred while fetching BungeeCord config from config.yml:");
-            e.printStackTrace();
-        }
-        Bukkit.getPluginManager().registerEvent(AsyncPlayerChatEvent.class, this, EventPriority.valueOf(apcePriority), new PlayerChat(), this);
-        Bukkit.getPluginManager().registerEvent(PlayerCommandPreprocessEvent.class, this, EventPriority.valueOf(pcppPriority), new PlayerCommandPreprocess(), this);
-        Bukkit.getPluginManager().registerEvents(serversGui, this);
-        if (config.getBoolean("voidless", false)) Bukkit.getPluginManager().registerEvent(PlayerMoveEvent.class, this, EventPriority.NORMAL, new PlayerMove(), this);
-        Log.info(" > Registering commands");
-        Objects.requireNonNull(Bukkit.getPluginCommand("setspawnonjoin")).setExecutor(new SetSpawnOnJoin());
-        Objects.requireNonNull(Bukkit.getPluginCommand("setgamemodeonjoin")).setExecutor(new SetGamemodeOnJoin());
-        Objects.requireNonNull(Bukkit.getPluginCommand("maintenance")).setExecutor(new Maintenance());
-        Objects.requireNonNull(Bukkit.getPluginCommand("kickall")).setExecutor(new KickAll());
-        Objects.requireNonNull(Bukkit.getPluginCommand("refreshrank")).setExecutor(new RefreshRank());
-        Objects.requireNonNull(Bukkit.getPluginCommand("transfer")).setExecutor(new Transfer());
-        if (config.getBoolean("lobby", false)) Objects.requireNonNull(Bukkit.getPluginCommand("servers")).setExecutor(new Servers());
-        if (config.getBoolean("lobby", false)) Objects.requireNonNull(Bukkit.getPluginCommand("spawn")).setExecutor(new Spawn());
-        Log.info(" > Enabled DoubleTimeCommands");
+        }.runTaskLater(this, 1);
     }
 
     @EventHandler
