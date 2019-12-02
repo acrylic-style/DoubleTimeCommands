@@ -37,8 +37,6 @@ public class PlayerUtils {
 
     public static String getName(org.bukkit.entity.Player player) {
         try {
-            //String rankString = ConfigProvider.getString("players." + player.getUniqueId() + ".rank", "DEFAULT", DoubleTimeCommands.file);
-            //Ranks rank = Ranks.valueOf(rankString);
             return customPrefixes.getOrDefault(player.getUniqueId(), getRank(player.getUniqueId()).getPrefix()) + player.getCustomName();
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -52,7 +50,7 @@ public class PlayerUtils {
 
     private static CollectionStrictSync<UUID, String> customPrefixes = new CollectionStrictSync<>();
     public static void getPlayerData(org.bukkit.entity.Player player, Callback<DataSerializer> callback) {
-        PluginMessageUtils.get(player, "", "dtc:getPlayer", new Callback<String>() {
+        PluginMessageUtils.get(player, "", "dtc:getplayer", new Callback<String>() {
             @Override
             public void done(String s, Throwable e) {
                 try {

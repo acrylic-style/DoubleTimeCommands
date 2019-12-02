@@ -120,7 +120,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (config.getBoolean("lobby", false)) Utils.removeScores(e.getPlayer().getUniqueId());
+        Utils.removeScores(e.getPlayer().getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.HIGH)

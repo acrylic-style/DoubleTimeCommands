@@ -52,7 +52,7 @@ public class PlayerUtils {
 
     private static CollectionStrictSync<UUID, String> customPrefixes = new CollectionStrictSync<>();
     public static void getPlayerData(org.bukkit.entity.Player player, Callback<DataSerializer> callback) {
-        PluginMessageUtils.get(player, "", "dtc:getPlayer", new Callback<String>() {
+        PluginMessageUtils.get(player, "", "dtc:getplayer", new Callback<String>() {
             @Override
             public void done(String s, Throwable e) {
                 try {
