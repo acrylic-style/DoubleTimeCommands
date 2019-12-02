@@ -24,10 +24,10 @@ public final class Utils {
 
     public static void morningCall(final UUID player) {
         Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
-        final Objective objective = board.registerNewObjective("subToLetMeHitIt",
+        final Objective objective = board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
-                RenderType.INTEGER);
+                RenderType.INTEGER) : board.getObjective("subToLetMeHitIt");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
         List<String> list = DoubleTimeCommands.config.getStringList("scoreboard.list");
