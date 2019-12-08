@@ -24,11 +24,13 @@ public final class Utils {
     private Utils() {}
 
     private static Collection<UUID, Collection<Integer, String>> scores = new Collection<>();
+    private static Collection<UUID, Objective> objectives = new Collection<>();
 
     public static void morningCall(final UUID player) {
         Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
-        final Objective objective = board.registerNewObjective("subToLetMeHitIt",
-                "dummy");
+        final Objective objective = objectives.getOrDefault(player, board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
+                "dummy") : board.getObjective("subToLetMeHitIt"));
+        objectives.putIfAbsent(player, objective);
         objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);

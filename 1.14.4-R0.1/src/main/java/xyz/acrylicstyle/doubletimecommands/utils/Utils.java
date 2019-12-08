@@ -21,13 +21,15 @@ public final class Utils {
     private Utils() {}
 
     private static Collection<UUID, Collection<Integer, String>> scores = new Collection<>();
+    private static Collection<UUID, Objective> objectives = new Collection<>();
 
     public static void morningCall(final UUID player) {
         Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
-        final Objective objective = board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
+        final Objective objective = objectives.getOrDefault(player, board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
-                RenderType.INTEGER) : board.getObjective("subToLetMeHitIt");
+                RenderType.INTEGER) : board.getObjective("subToLetMeHitIt"));
+        objectives.putIfAbsent(player, objective);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
         List<String> list = DoubleTimeCommands.config.getStringList("scoreboard.list");
