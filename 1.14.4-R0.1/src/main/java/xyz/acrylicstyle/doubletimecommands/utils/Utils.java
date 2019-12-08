@@ -47,6 +47,8 @@ public final class Utils {
 
     private static void placeHolder(final int score, final String text, final Objective obj, final UUID player) {
         if (text.contains("%points%")) {
+            String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%points%", "?"));
+            setScore(score, text2, obj, player);
             getPoints(Bukkit.getPlayer(player), new Callback<Long>() {
                 @Override
                 public void done(Long l, Throwable throwable) {
@@ -55,6 +57,8 @@ public final class Utils {
                 }
             });
         } else if (text.contains("%experience%")) {
+            String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%experience%", "?"));
+            setScore(score, text2, obj, player);
             getExperience(Bukkit.getPlayer(player), new Callback<Long>() {
                 @Override
                 public void done(Long l, Throwable throwable) {
@@ -64,6 +68,8 @@ public final class Utils {
                 }
             });
         } else if (text.contains("%players%")) {
+            String text2 = ChatColor.translateAlternateColorCodes('&', text.replaceAll("%players%", "?"));
+            setScore(score, text2, obj, player);
             PluginMessageUtils.get(Bukkit.getPlayer(player), "", player + ",,,,", "dtc:playing", new Callback<String>() {
                 @Override
                 public void done(String s, Throwable throwable) {
@@ -81,7 +87,10 @@ public final class Utils {
             Objects.requireNonNull(objective.getScoreboard()).resetScores(text);
             return;
         }
-        if (scores.get(uuid) == null) scores.put(uuid, new Collection<>());
+        if (scores.get(uuid) == null) {
+            scores.put(uuid, new Collection<>());
+            Objects.requireNonNull(objective.getScoreboard()).getEntries().forEach(str -> Objects.requireNonNull(objective.getScoreboard()).resetScores(str));
+        }
         if (scores.get(uuid).get(score) != null) {
             if (scores.get(uuid).get(score).equalsIgnoreCase(text)) return; // return if name is same as last score entry
             Objects.requireNonNull(objective.getScoreboard()).resetScores(scores.get(uuid).get(score));
@@ -91,7 +100,7 @@ public final class Utils {
         Collection<Integer, String> collection = scores.get(uuid);
         collection.put(score, text);
         scores.put(uuid, collection);
-        if (Bukkit.getPlayer(uuid) != null) Bukkit.getPlayer(uuid).setScoreboard(Objects.requireNonNull(objective.getScoreboard())); // no it wont produce npe for sure
+        if (Bukkit.getPlayer(uuid) != null) Bukkit.getPlayer(uuid).setScoreboard(Objects.requireNonNull(objective.getScoreboard())); // no it wont produce npe
     }
 
     public static void getPoints(Player player, Callback<Long> callback) {
