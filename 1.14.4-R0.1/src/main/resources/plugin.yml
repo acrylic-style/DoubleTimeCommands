@@ -1,6 +1,7 @@
 name: DoubleTimeCommands
 main: xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands
 version: 0.0.1
+load: POSTWORLD
 depend: [TomeitoLib]
 
 commands:
