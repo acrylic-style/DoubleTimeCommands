@@ -209,7 +209,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        e.setCancelled(true);
+        if (config.getBoolean("lobby", false)) e.setCancelled(true);
         if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player) || !config.getBoolean("lobby", false)) return;
         Player victim = (Player) e.getEntity();
         Player damager = (Player) e.getDamager();
