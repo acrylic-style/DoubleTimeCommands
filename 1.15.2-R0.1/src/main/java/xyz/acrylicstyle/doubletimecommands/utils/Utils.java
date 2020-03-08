@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import util.Collection;
 import util.CollectionList;
+import xyz.acrylicstyle.craftbukkit.CraftScoreboard;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_core.utils.Callback;
 import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
@@ -24,7 +25,7 @@ public final class Utils {
     private static Collection<UUID, Objective> objectives = new Collection<>();
 
     public static void morningCall(final UUID player) {
-        Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
+        Scoreboard board = new CraftScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard()).cloneScoreboard();
         final Objective objective = objectives.getOrDefault(player, board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
@@ -40,9 +41,7 @@ public final class Utils {
                     this.cancel();
                     return;
                 }
-                new CollectionList<>(list).foreach((s, i) -> {
-                    placeHolder(i, s, objective, player);
-                });
+                new CollectionList<>(list).foreach((s, i) -> placeHolder(i, s, objective, player));
             }
         }.runTaskTimer(DoubleTimeCommands.getPlugin(DoubleTimeCommands.class), 20, 5*20);
     }
@@ -102,7 +101,7 @@ public final class Utils {
         Collection<Integer, String> collection = scores.get(uuid);
         collection.put(score, text);
         scores.put(uuid, collection);
-        if (Bukkit.getPlayer(uuid) != null) Bukkit.getPlayer(uuid).setScoreboard(Objects.requireNonNull(objective.getScoreboard())); // no it wont produce npe
+        if (Bukkit.getPlayer(uuid) != null) Objects.requireNonNull(Bukkit.getPlayer(uuid)).setScoreboard(Objects.requireNonNull(objective.getScoreboard()));
     }
 
     public static void getPoints(Player player, Callback<Long> callback) {

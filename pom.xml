@@ -40,7 +40,7 @@
         </plugins>
     </build>
     <modules>
-        <module>1.14.4-R0.1</module>
+        <module>1.15.2-R0.1</module>
         <module>1.8.8-R0.1</module>
         <module>1.12.2-R0.1</module>
     </modules>
@@ -58,18 +58,18 @@
         <dependency>
             <groupId>xyz.acrylicstyle</groupId>
             <artifactId>tomeito_lib</artifactId>
-            <version>0.1.12</version>
+            <version>0.1.22</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xyz.acrylicstyle</groupId>
+                    <artifactId>Util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>xyz.acrylicstyle</groupId>
             <artifactId>Util</artifactId>
-            <version>0.5.1</version>
+            <version>0.8.7</version>
         </dependency>
     </dependencies>
 </project>

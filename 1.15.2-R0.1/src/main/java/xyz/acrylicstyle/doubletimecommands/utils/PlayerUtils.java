@@ -118,7 +118,7 @@ public class PlayerUtils {
     /**
      * @param required Required rank for do something
      * @return True if the required rank equals actual rank
-     * @example if (!PlayerUtils.must(Ranks.ADMIN, uuid)) System.out.println("they dont have permission fuck");
+     * Example: if (!PlayerUtils.must(Ranks.ADMIN, uuid)) System.out.println("they dont have permission fuck");
      */
     public static boolean must(Ranks required, UUID uuid) {
         Ranks actual = PlayerUtils.getRank(uuid);

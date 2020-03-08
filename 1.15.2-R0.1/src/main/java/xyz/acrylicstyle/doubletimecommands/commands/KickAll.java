@@ -6,13 +6,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class KickAll implements CommandExecutor {
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		String reason = null;
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+		StringBuilder reason = new StringBuilder();
 		if (args.length != 0) {
-			for (String arg : args) reason += arg + " ";
+			for (String arg : args) reason.append(arg).append(" ");
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (sender instanceof Player) if (player.getUniqueId() == ((Player) sender).getUniqueId()) continue;

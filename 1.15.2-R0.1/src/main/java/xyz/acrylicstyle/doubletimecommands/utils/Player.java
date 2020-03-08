@@ -65,6 +65,7 @@ public class Player {
 		return this.toUUID().toString();
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public String toUsername() throws IllegalArgumentException, IOException, ParseException {
 		if (this.username != null) return this.username;
 		if (this.uuid == null) throw new IllegalArgumentException("UUID must be set before call this method.");

@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 import xyz.acrylicstyle.doubletimecommands.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class SetSpawnOnJoin implements CommandExecutor {
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 		ConfigProvider config = null;
 		try {
 			config = new ConfigProvider("./plugins/DoubleTimeCommands/config.yml");
@@ -29,7 +30,7 @@ public class SetSpawnOnJoin implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Couldn't read config! Please try again later.");
 			return true;
 		}
-		Boolean value = args.length == 0 ? !config.getBoolean("spawnOnJoin", false) : new Boolean(args[0]);
+		Boolean value = args.length == 0 ? !config.getBoolean("spawnOnJoin", false) : Boolean.parseBoolean(args[0]);
 		try {
 			config.setThenSave("spawnOnJoin", value);
 		} catch (IOException e) {

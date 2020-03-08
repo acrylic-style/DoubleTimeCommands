@@ -5,12 +5,13 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.EventExecutor;
+import org.jetbrains.annotations.NotNull;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.tomeito_core.utils.Ranks;
 
 public class PlayerChat implements EventExecutor {
 	@Override
-	public void execute(Listener listener, Event event) {
+	public void execute(@NotNull Listener listener, @NotNull Event event) {
 		AsyncPlayerChatEvent e = (AsyncPlayerChatEvent) event;
 		e.getPlayer().setDisplayName(PlayerUtils.getName(e.getPlayer()));
 		e.getPlayer().setPlayerListName(PlayerUtils.getName(e.getPlayer()));

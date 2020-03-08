@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import util.Collection;
 import util.CollectionList;
 import xyz.acrylicstyle.doubletimecommands.utils.Server;
@@ -85,6 +86,7 @@ public class ServersGui implements InventoryHolder, Listener {
         }.runTaskTimer(this.plugin, 0, 20*5);
     }
 
+    @NotNull
     @Override
     public Inventory getInventory() {
         return this.inventory;
