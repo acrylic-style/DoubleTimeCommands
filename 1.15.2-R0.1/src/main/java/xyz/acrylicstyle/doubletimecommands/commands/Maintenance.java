@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
-import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_api.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
 
 import java.io.IOException;
 

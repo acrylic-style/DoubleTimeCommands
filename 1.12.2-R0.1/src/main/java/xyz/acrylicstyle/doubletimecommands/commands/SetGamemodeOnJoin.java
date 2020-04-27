@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import xyz.acrylicstyle.doubletimecommands.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_api.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
 
 import java.util.Locale;
 

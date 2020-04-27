@@ -6,18 +6,18 @@ import org.bukkit.command.CommandSender;
 import util.CollectionStrictSync;
 import util.DataSerializer;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
-import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Callback;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
-import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
-import xyz.acrylicstyle.tomeito_core.utils.Ranks;
+import xyz.acrylicstyle.tomeito_api.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_api.utils.Callback;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
+import xyz.acrylicstyle.tomeito_api.utils.PluginMessageUtils;
+import xyz.acrylicstyle.tomeito_api.utils.Ranks;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.UUID;
 
 public class PlayerUtils {
-    private static CollectionStrictSync<UUID, Ranks> ranks = new CollectionStrictSync<>();
+    private static final CollectionStrictSync<UUID, Ranks> ranks = new CollectionStrictSync<>();
 
     /**
      * @param something UUID or username.
@@ -50,7 +50,7 @@ public class PlayerUtils {
         return customPrefixes.getOrDefault(player.getUniqueId(), rank.getPrefix()) + player.getCustomName();
     }
 
-    private static CollectionStrictSync<UUID, String> customPrefixes = new CollectionStrictSync<>();
+    private static final CollectionStrictSync<UUID, String> customPrefixes = new CollectionStrictSync<>();
     public static void getPlayerData(org.bukkit.entity.Player player, Callback<DataSerializer> callback) {
         PluginMessageUtils.get(player, "", "dtc:getplayer", new Callback<String>() {
             @Override
@@ -120,7 +120,7 @@ public class PlayerUtils {
     /**
      * @param required Required rank for do something
      * @return True if the required rank equals actual rank
-     * @example if (!PlayerUtils.must(Ranks.ADMIN, uuid)) System.out.println("they dont have permission fuck");
+     * example: if (!PlayerUtils.must(Ranks.ADMIN, uuid)) System.out.println("they dont have permission fuck");
      */
     public static boolean must(Ranks required, UUID uuid) {
         Ranks actual = PlayerUtils.getRank(uuid);

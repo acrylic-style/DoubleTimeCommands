@@ -23,10 +23,10 @@ import xyz.acrylicstyle.doubletimecommands.events.PlayerMove;
 import xyz.acrylicstyle.doubletimecommands.gui.ServersGui;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
 import xyz.acrylicstyle.doubletimecommands.utils.Utils;
-import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Callback;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
-import xyz.acrylicstyle.tomeito_core.utils.Ranks;
+import xyz.acrylicstyle.tomeito_api.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_api.utils.Callback;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
+import xyz.acrylicstyle.tomeito_api.utils.Ranks;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
     public static File file = null;
     public static ConfigProvider config = null;
     public static ServersGui serversGui;
-    private String gameMenuText = ChatColor.GREEN + "Game Menu" + ChatColor.GRAY + " (Right Click)";
+    private final String gameMenuText = ChatColor.GREEN + "Game Menu" + ChatColor.GRAY + " (Right Click)";
 
     public void onEnable() {
         new BukkitRunnable() {
@@ -205,7 +205,7 @@ public class DoubleTimeCommands extends JavaPlugin implements Listener {
         }
     }
 
-    private CollectionList<UUID> punches = new CollectionList<>();
+    private final CollectionList<UUID> punches = new CollectionList<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {

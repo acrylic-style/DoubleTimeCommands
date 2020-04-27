@@ -9,8 +9,8 @@ import util.Collection;
 import util.CollectionList;
 import xyz.acrylicstyle.craftbukkit.CraftScoreboard;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
-import xyz.acrylicstyle.tomeito_core.utils.Callback;
-import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
+import xyz.acrylicstyle.tomeito_api.utils.Callback;
+import xyz.acrylicstyle.tomeito_api.utils.PluginMessageUtils;
 
 import java.text.NumberFormat;
 import java.util.Collections;
@@ -21,8 +21,8 @@ import java.util.UUID;
 public final class Utils {
     private Utils() {}
 
-    private static Collection<UUID, Collection<Integer, String>> scores = new Collection<>();
-    private static Collection<UUID, Objective> objectives = new Collection<>();
+    private static final Collection<UUID, Collection<Integer, String>> scores = new Collection<>();
+    private static final Collection<UUID, Objective> objectives = new Collection<>();
 
     public static void morningCall(final UUID player) {
         Scoreboard board = new CraftScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard()).cloneScoreboard();

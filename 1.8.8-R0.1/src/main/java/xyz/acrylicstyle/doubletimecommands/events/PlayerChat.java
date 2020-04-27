@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.EventExecutor;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
-import xyz.acrylicstyle.tomeito_core.utils.Ranks;
+import xyz.acrylicstyle.tomeito_api.utils.Ranks;
 
 public class PlayerChat implements EventExecutor {
 	@Override

@@ -14,22 +14,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 import util.Collection;
 import util.CollectionList;
 import xyz.acrylicstyle.doubletimecommands.utils.Server;
-import xyz.acrylicstyle.tomeito_core.utils.Callback;
-import xyz.acrylicstyle.tomeito_core.utils.PluginMessageUtils;
+import xyz.acrylicstyle.tomeito_api.utils.Callback;
+import xyz.acrylicstyle.tomeito_api.utils.PluginMessageUtils;
 
 import java.util.Objects;
 
 import static xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands.config;
 
 public class ServersGui implements InventoryHolder, Listener {
-    private String ctc1 = "➤ Click to Connect";
-    private String ctc2 = "   Click to Connect";
-    private Inventory inventory;
+    private final String ctc1 = "➤ Click to Connect";
+    private final String ctc2 = "   Click to Connect";
+    private final Inventory inventory;
     private boolean cycle = false;
-    private Collection<Integer, Server> servers = new Collection<>();
-    private Collection<String, Server> itemNames = new Collection<>();
-    private Collection<Integer, String> playing = new Collection<>();
-    private Collection<Integer, String> availableGames = new Collection<>();
+    private final Collection<Integer, Server> servers = new Collection<>();
+    private final Collection<String, Server> itemNames = new Collection<>();
+    private final Collection<Integer, String> playing = new Collection<>();
+    private final Collection<Integer, String> availableGames = new Collection<>();
     private final Plugin plugin;
 
     public ServersGui(Plugin plugin) {
@@ -68,6 +68,7 @@ public class ServersGui implements InventoryHolder, Listener {
                 if (Bukkit.getOnlinePlayers().size() <= 0) return;
                 Player player = new CollectionList<Player>(Bukkit.getOnlinePlayers()).first();
                 servers.forEach((i, server) -> {
+                    assert player != null;
                     PluginMessageUtils.get(player, server.getGamePrefix(), player.getUniqueId() + "," + server.getGamePrefix(), "dtc:playing", new Callback<String>() {
                         @Override
                         public void done(String s, Throwable throwable) {

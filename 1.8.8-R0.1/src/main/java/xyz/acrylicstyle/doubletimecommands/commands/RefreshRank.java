@@ -7,9 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.doubletimecommands.utils.PlayerUtils;
-import xyz.acrylicstyle.tomeito_core.utils.Callback;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
-import xyz.acrylicstyle.tomeito_core.utils.Ranks;
+import xyz.acrylicstyle.tomeito_api.utils.Callback;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
+import xyz.acrylicstyle.tomeito_api.utils.Ranks;
 
 import java.util.concurrent.atomic.AtomicReference;
 

@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import xyz.acrylicstyle.doubletimecommands.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_api.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class SetSpawnOnJoin implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Couldn't read config! Please try again later.");
 			return true;
 		}
-		Boolean value = args.length == 0 ? !config.getBoolean("spawnOnJoin", false) : new Boolean(args[0]);
+		Boolean value = args.length == 0 ? !config.getBoolean("spawnOnJoin", false) : Boolean.parseBoolean(args[0]);
 		try {
 			config.setThenSave("spawnOnJoin", value);
 		} catch (IOException e) {
