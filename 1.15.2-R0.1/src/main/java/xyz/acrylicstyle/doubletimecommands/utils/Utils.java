@@ -24,7 +24,7 @@ public final class Utils {
     private static final Collection<UUID, Objective> objectives = new Collection<>();
 
     public static void morningCall(final UUID player) {
-        Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
+        Scoreboard board = cloneScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard());
         final Objective objective = objectives.getOrDefault(player, board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
@@ -137,5 +137,27 @@ public final class Utils {
 
     public static void removeScores(UUID uuid) {
         scores.remove(uuid);
+    }
+
+    public static Scoreboard cloneScoreboard(Scoreboard scoreboard) {
+        Scoreboard sb = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
+        scoreboard.getTeams().forEach(team -> {
+            Team t = sb.registerNewTeam(team.getName());
+            team.getEntries().forEach(t::addEntry);
+            t.setAllowFriendlyFire(team.allowFriendlyFire());
+            t.setCanSeeFriendlyInvisibles(team.canSeeFriendlyInvisibles());
+            t.setDisplayName(team.getDisplayName());
+            t.setPrefix(team.getPrefix());
+            t.setSuffix(team.getSuffix());
+            t.setColor(team.getColor());
+            t.setOption(Team.Option.COLLISION_RULE, team.getOption(Team.Option.COLLISION_RULE));
+            t.setOption(Team.Option.DEATH_MESSAGE_VISIBILITY, team.getOption(Team.Option.DEATH_MESSAGE_VISIBILITY));
+            t.setOption(Team.Option.NAME_TAG_VISIBILITY, team.getOption(Team.Option.NAME_TAG_VISIBILITY));
+        });
+        scoreboard.getObjectives().forEach(objective -> {
+            Objective obj = sb.registerNewObjective(objective.getName(), objective.getCriteria(), objective.getDisplayName(), objective.getRenderType());
+            obj.setDisplaySlot(objective.getDisplaySlot());
+        });
+        return sb;
     }
 }
