@@ -7,7 +7,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import util.Collection;
 import util.CollectionList;
-import xyz.acrylicstyle.craftbukkit.CraftScoreboard;
 import xyz.acrylicstyle.doubletimecommands.DoubleTimeCommands;
 import xyz.acrylicstyle.tomeito_api.utils.Callback;
 import xyz.acrylicstyle.tomeito_api.utils.PluginMessageUtils;
@@ -25,7 +24,7 @@ public final class Utils {
     private static final Collection<UUID, Objective> objectives = new Collection<>();
 
     public static void morningCall(final UUID player) {
-        Scoreboard board = new CraftScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard()).cloneScoreboard();
+        Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         final Objective objective = objectives.getOrDefault(player, board.getObjective("subToLetMeHitIt") == null ? board.registerNewObjective("subToLetMeHitIt",
                 "dummy",
                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DoubleTimeCommands.config.getString("scoreboard.name", "Sky Wars")).toUpperCase()),
